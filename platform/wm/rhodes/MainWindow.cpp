@@ -227,6 +227,7 @@ LRESULT CMainWindow::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*
    	    SetFullScreen(true);
 #endif
 
+
 	RHO_ASSERT(SUCCEEDED(hr));
 Error:
 
@@ -302,7 +303,7 @@ LRESULT CMainWindow::OnSize(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOO
 	return 0;
 }
 
-LRESULT CMainWindow::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+LRESULT CMainWindow::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
 {
 	PAINTSTRUCT ps;
 	HDC hDC = BeginPaint(&ps);
@@ -311,16 +312,7 @@ LRESULT CMainWindow::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
     splash.start();
 #ifdef _WIN32_WCE	
     StringW pathW = convertToStringW(RHODESAPP().getLoadingPngPath());
-
-	StringW path_wm_W = pathW.substr(0, pathW.length() - 3);
-	String wm_png = "wm.png";
-	path_wm_W.append(convertToStringW(wm_png));
-
-    HBITMAP hbitmap = SHLoadImageFile(path_wm_W.c_str());
-	if (!hbitmap) {
-		hbitmap = SHLoadImageFile(pathW.c_str());
-	}
-		
+    HBITMAP hbitmap = SHLoadImageFile(pathW.c_str());
 	if (!hbitmap)
 		return 0;
 
@@ -350,6 +342,8 @@ LRESULT CMainWindow::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
 #endif //_WIN32_WCE
 
 	EndPaint(&ps);
+
+    bHandled = TRUE;
 	return 0;
 }
 
