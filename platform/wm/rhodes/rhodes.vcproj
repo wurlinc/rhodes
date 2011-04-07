@@ -161,8 +161,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../shared;./rho;../../shared/ruby;../../shared/wtl80/include;."
-				PreprocessorDefinitions="_DEBUG;DEBUG;WIN32;_WINDOWS;ENABLE_DYNAMIC_RHOBUNDLE"
+				AdditionalIncludeDirectories="../../shared;./rho;../../shared/ruby;../../shared/wtl80/include;.;&quot;.\GeneratedFiles&quot;;&quot;$(QTDIR)\include&quot;;&quot;.\GeneratedFiles\$(ConfigurationName)&quot;;&quot;$(QTDIR)\include\qtmain&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QtWebKit&quot;"
+				PreprocessorDefinitions="_DEBUG;DEBUG;WIN32;_WINDOWS;ENABLE_DYNAMIC_RHOBUNDLE;UNICODE;QT_LARGEFILE_SUPPORT;QT_CORE_LIB;QT_GUI_LIB;QT_WEBKIT_LIB"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
@@ -186,10 +186,10 @@
 				RegisterOutput="false"
 				IgnoreImportLibrary="true"
 				UseUnicodeResponseFiles="false"
-				AdditionalDependencies="wininet.lib comsuppwd.lib ws2_32.lib Crypt32.lib gdiplus.lib"
+				AdditionalDependencies="wininet.lib comsuppwd.lib ws2_32.lib Crypt32.lib gdiplus.lib qtmaind.lib QtCored4.lib QtGuid4.lib QtWebKitd4.lib"
 				OutputFile="$(OutDir)/rhodes.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(OutDir)"
+				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;&quot;$(QTDIR)\lib&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="0"
 				StackReserveSize="196608"
@@ -353,8 +353,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				AdditionalIncludeDirectories="../../shared;./rho;../../shared/ruby;../../shared/wtl80/include;."
-				PreprocessorDefinitions="_NDEBUG;NDEBUG;WIN32;_WINDOWS;ENABLE_DYNAMIC_RHOBUNDLE"
+				AdditionalIncludeDirectories="../../shared;./rho;../../shared/ruby;../../shared/wtl80/include;.;&quot;.\GeneratedFiles&quot;;&quot;$(QTDIR)\include&quot;;&quot;.\GeneratedFiles\$(ConfigurationName)&quot;;&quot;$(QTDIR)\include\qtmain&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QtWebKit&quot;"
+				PreprocessorDefinitions="_NDEBUG;NDEBUG;WIN32;_WINDOWS;ENABLE_DYNAMIC_RHOBUNDLE;UNICODE;QT_LARGEFILE_SUPPORT;QT_NO_DEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WEBKIT_LIB"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
@@ -377,10 +377,10 @@
 				RegisterOutput="false"
 				IgnoreImportLibrary="true"
 				UseUnicodeResponseFiles="false"
-				AdditionalDependencies="wininet.lib comsuppwd.lib ws2_32.lib Crypt32.lib gdiplus.lib"
+				AdditionalDependencies="wininet.lib comsuppwd.lib ws2_32.lib Crypt32.lib gdiplus.lib qtmain.lib QtCore4.lib QtGui4.lib QtWebKit4.lib"
 				OutputFile="$(OutDir)/rhodes.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(OutDir)"
+				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;&quot;$(QTDIR)\lib&quot;"
 				GenerateDebugInformation="false"
 				SubSystem="0"
 				StackReserveSize="196608"
@@ -1041,6 +1041,26 @@
 				>
 			</File>
 			<File
+				RelativePath=".\QtMainWindow.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\Rhodes.cpp"
 				>
 			</File>
@@ -1195,6 +1215,32 @@
 				>
 			</File>
 			<File
+				RelativePath=".\QtMainWindow.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WEBKIT_LIB &quot;-I.&quot; &quot;-I.\GeneratedFiles&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtWebKit&quot; &quot;.\QtMainWindow.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WEBKIT_LIB  &quot;-I.\GeneratedFiles&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtWebKit&quot; &quot;-I.&quot; &quot;.\QtMainWindow.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\resource.h"
 				>
 			</File>
@@ -1244,6 +1290,78 @@
 			Name="Generated Files"
 			SourceControlFiles="false"
 			>
+			<File
+				RelativePath=".\GeneratedFiles\ui_QtMainWindow.h"
+				>
+			</File>
+			<Filter
+				Name="Debug"
+				>
+				<File
+					RelativePath=".\GeneratedFiles\Debug\moc_QtMainWindow.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="Release"
+				>
+				<File
+					RelativePath=".\GeneratedFiles\Release\moc_QtMainWindow.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Windows Mobile 6 Professional SDK (ARMV4I)"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="rho"
@@ -1306,13 +1424,6 @@
 				<File
 					RelativePath=".\rho\rubyext\NativeToolbar.cpp"
 					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\rho\rubyext\NativeToolbar.h"
@@ -1412,13 +1523,6 @@
 			<File
 				RelativePath=".\RhoNativeViewManager.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
@@ -1459,13 +1563,6 @@
 			<File
 				RelativePath=".\MapView\MapViewManager.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\MapView\MapViewManager.h"
@@ -1479,6 +1576,32 @@
 				</FileConfiguration>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\QtMainWindow.ui"
+			>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Uic&apos;ing $(InputFileName)..."
+					CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; -o &quot;.\GeneratedFiles\ui_$(InputName).h&quot; &quot;$(InputPath)&quot;"
+					AdditionalDependencies="$(QTDIR)\bin\uic.exe"
+					Outputs="&quot;.\GeneratedFiles\ui_$(InputName).h&quot;"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Uic&apos;ing $(InputFileName)..."
+					CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; -o &quot;.\GeneratedFiles\ui_$(InputName).h&quot; &quot;$(InputPath)&quot;"
+					AdditionalDependencies="$(QTDIR)\bin\uic.exe"
+					Outputs="&quot;.\GeneratedFiles\ui_$(InputName).h&quot;"
+				/>
+			</FileConfiguration>
+		</File>
 	</Files>
 	<Globals>
 		<Global
