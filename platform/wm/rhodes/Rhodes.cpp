@@ -237,20 +237,26 @@ public :
 		return m_appWindow;
 	}
 
+#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
 	HWND GetWebViewWindow() {
 		return m_appWindow.getWebViewHWND();
 	}
+#endif
 
     void RunMessageLoop( ) throw( )
     {
         MSG msg;
         while (GetMessage(&msg, NULL, 0, 0))
         {
+#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
             if (!m_appWindow.TranslateAccelerator(&msg))
             {
+#endif
                 TranslateMessage(&msg);
                 DispatchMessage(&msg);
+#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
             }
+#endif
         }
 
 #if defined(OS_WINCE)
@@ -457,9 +463,11 @@ CMainWindow& getAppWindow()
 	return _AtlModule.GetAppWindow();
 }
 
+#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
 extern "C" HWND getWebViewWnd() {
 	return _AtlModule.GetWebViewWindow();
 }
+#endif
 
 CMainWindow* Rhodes_getMainWindow() {
 	return _AtlModule.GetMainWindowObject();

@@ -13,7 +13,7 @@
 #include <strsafe.h>
 #endif
 #include "resource.h"
-#include "MainWindow.h"
+#include "MainWindowWin32.h"
 #include "common/StringConverter.h"
 #include "AppManager.h"
 #include "ext/rho/rhoruby.h"

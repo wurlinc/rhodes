@@ -2,6 +2,7 @@
 
 #include "common/IRhoThreadImpl.h"
 #include "ruby/ext/rho/rhoruby.h"
+#include "MainWindow.h"
 
 class CNativeToolbar : public CWindowImpl<CNativeToolbar, CToolBarCtrl>
 {
@@ -38,18 +39,28 @@ public:
     public:
         CCreateTask(rho_param *p) : m_param(rho_param_dup(p)){ }
         ~CCreateTask(){ rho_param_free(m_param); }
-        virtual void runObject(){ CNativeToolbar::getInstance().createToolbar(m_param); }
+        virtual void runObject(){
+#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
+			CNativeToolbar::getInstance().createToolbar(m_param);
+#endif
+		}
     };
     class CRemoveTask: public rho::common::IRhoRunnable
     {
     public:
-        virtual void runObject(){ CNativeToolbar::getInstance().removeToolbar(); }
+        virtual void runObject(){
+#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
+			CNativeToolbar::getInstance().removeToolbar(); 
+#endif
+		}
     };
 
     CNativeToolbar(void);
     ~CNativeToolbar(void);
 
+#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
     static CNativeToolbar& getInstance();
+#endif
 
 	BEGIN_MSG_MAP(CNativeToolbar)
 		MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBkgnd)

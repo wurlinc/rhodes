@@ -19,6 +19,9 @@ extern CMainWindow& getAppWindow();
 IMPLEMENT_LOGCLASS(CNativeToolbar,"NativeToolbar");
 extern "C" int rho_wmsys_has_touchscreen();
 
+using namespace rho;
+using namespace rho::common;
+
 CNativeToolbar::CNativeToolbar(void)
 {
 }
@@ -32,10 +35,12 @@ void CNativeToolbar::OnFinalMessage(HWND /*hWnd*/)
     removeAllButtons();
 }
 
+#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
 /*static*/ CNativeToolbar& CNativeToolbar::getInstance()
 {
     return getAppWindow().getToolbar();
 }
+#endif
 
 void CNativeToolbar::removeAllButtons()
 {
@@ -445,7 +450,9 @@ void create_native_toolbar(int bar_type, rho_param *p)
         remove_native_toolbar();
     else if ( bar_type == TOOLBAR_TYPE )
     {
+#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
         getAppWindow().performOnUiThread(new CNativeToolbar::CCreateTask(p) );
+#endif
     }else
     {
     	RAWLOGC_ERROR("NativeBar", "Only Toolbar control is supported.");
@@ -460,7 +467,9 @@ void create_nativebar(int bar_type, rho_param *p)
 
 void remove_native_toolbar() 
 {
+#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
     getAppWindow().performOnUiThread(new CNativeToolbar::CRemoveTask() );
+#endif
 }
 
 void remove_nativebar() 
@@ -471,7 +480,12 @@ void remove_nativebar()
 
 VALUE nativebar_started() 
 {
-    bool bStarted = CNativeToolbar::getInstance().isStarted();
+    bool bStarted = 
+#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
+		CNativeToolbar::getInstance().isStarted();
+#else
+		true;
+#endif
     return rho_ruby_create_boolean(bStarted?1:0);
 }
 

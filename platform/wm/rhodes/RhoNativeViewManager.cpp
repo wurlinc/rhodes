@@ -20,6 +20,7 @@ extern "C" HWND getWebViewWnd();
 extern "C" HWND getMainWnd();
 CMainWindow* Rhodes_getMainWindow();
 
+using namespace rho;
 
 class RhoNativeViewHolder{
   public :
@@ -72,7 +73,9 @@ public:
 	virtual void run() {
 		CMainWindow* mw = Rhodes_getMainWindow();
 		String sn(mView->factory_holder->viewtype);
+#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
 		mw->openNativeView(mView->factory_holder->factory, mView->n_view, sn);
+#endif
 		//delete this;
 	}
 
@@ -86,7 +89,9 @@ public:
 	}
 	virtual void run() {
 		CMainWindow* mw = Rhodes_getMainWindow();
+#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
 		mw->closeNativeView();
+#endif
 		//delete this;
 	}
 };
@@ -252,11 +257,11 @@ NativeViewFactory* RhoNativeViewManagerWM::getFactoryByViewType(const char* view
 }
 
 void RhoNativeViewUtil::executeInUIThread_WM(RhoNativeViewRunnable* command) {
+#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
 	HWND main_wnd = getMainWnd();
 	::PostMessage(main_wnd, WM_EXECUTE_COMMAND, (WPARAM)command, 0);
-
+#endif
 }
-
 
 extern "C" int rho_native_view_manager_create_native_view(const char* viewtype, int tab_index, VALUE params) {
 	RhoNativeViewHolder* h = getHolderByViewTypeName(viewtype);

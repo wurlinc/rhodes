@@ -110,7 +110,7 @@ HRESULT Camera::selectPicture(HWND hwndOwner,LPTSTR pszFilename)
 
 		create_folder(rhoroot);*/
 
-        StringW strBlobRoot = convertToStringW( RHODESAPP().getBlobsDirPath() );
+		rho::StringW strBlobRoot = rho::common::convertToStringW( RHODESAPP().getBlobsDirPath() );
 
         LPCTSTR szExt = wcsrchr(pszFilename, '.');
 		TCHAR filename[256];
