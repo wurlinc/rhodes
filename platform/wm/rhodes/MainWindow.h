@@ -10,6 +10,7 @@
 #include "RhoNativeViewManagerWM.h"
 #include "rho/rubyext/NativeToolbar.h"
 #include "LogView.h"
+#include "MainWindowProxy.h"
 
 static UINT WM_TAKEPICTURE             = ::RegisterWindowMessage(L"RHODES_WM_TAKEPICTURE");
 static UINT WM_SELECTPICTURE           = ::RegisterWindowMessage(L"RHODES_WM_SELECTPICTURE");
@@ -30,6 +31,7 @@ public:
     CMainWindow();
     ~CMainWindow();
     void Navigate2(BSTR URL);
+	HWND Initialize(const wchar_t* title);
 
     BEGIN_MSG_MAP(CMainWindow)
         MESSAGE_HANDLER(WM_CREATE, OnCreate)
@@ -71,6 +73,9 @@ private:
 public:
     static int getScreenWidth() {return m_screenWidth;}
     static int getScreenHeight() {return m_screenHeight;}
+
+private:
+    CMainWindowProxy m_mainWindowProxy;
 };
 
 #if !defined(_WIN32_WCE)

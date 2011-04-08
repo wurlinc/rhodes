@@ -16,6 +16,7 @@ class QtMainWindow : public QMainWindow
 public:
     explicit QtMainWindow(QWidget *parent = 0);
     ~QtMainWindow();
+    void navigate(QUrl url);
     //virtual void closeEvent(QCloseEvent *);
 
 private:

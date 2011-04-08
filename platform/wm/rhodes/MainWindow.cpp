@@ -15,20 +15,23 @@ extern "C" void rho_geoimpl_turngpsoff();
 int CMainWindow::m_screenWidth;
 int CMainWindow::m_screenHeight;
 
-CMainWindow::CMainWindow()
-{
-}
+CMainWindow::CMainWindow() { }
 
-CMainWindow::~CMainWindow()
-{
-}
+CMainWindow::~CMainWindow() { }
 
 void CMainWindow::Navigate2(BSTR URL) {
     String cleared_url = convertToStringA(OLE2CT(URL));
     if (!cleared_url.empty()) {
         StringW cw = convertToStringW(cleared_url);
-        //cw.c_str();
+		m_mainWindowProxy.navigate(cw.c_str());
     }
+}
+
+HWND CMainWindow::Initialize(const wchar_t* title)
+{
+    HWND hWnd = (HWND)m_mainWindowProxy.init(title);
+	SubclassWindow(hWnd);
+	return hWnd;
 }
 
 // **************************************************************************

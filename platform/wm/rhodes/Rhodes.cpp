@@ -110,6 +110,7 @@ public :
         }
         // Note: In this sample, we don't respond differently to different hr success codes.
 
+#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
         // Allow only one instance of the application.
         // the "| 0x01" activates the correct owned window of the previous instance's main window
 		HWND hWnd = NULL;
@@ -128,6 +129,7 @@ public :
 			SetForegroundWindow( HWND( DWORD(hWnd) | 0x01 ) );
 			return S_FALSE;
 		}
+#endif
 
 		rho_logconf_Init(m_strRootPath.c_str());
 
@@ -195,7 +197,8 @@ public :
         dwStyle |= WS_OVERLAPPEDWINDOW;
 #endif
         // Create the main application window
-        m_appWindow.Create(NULL, CWindow::rcDefault, convertToStringW(strTitle).c_str(), dwStyle);
+        //m_appWindow.Create(NULL, CWindow::rcDefault, convertToStringW(strTitle).c_str(), dwStyle);
+        m_appWindow.Initialize(convertToStringW(strTitle).c_str());
         if (NULL == m_appWindow.m_hWnd)
         {
             return S_FALSE;

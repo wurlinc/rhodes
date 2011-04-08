@@ -5,8 +5,9 @@ QtMainWindow::QtMainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::QtMainWindow) //, wi(new QWebInspector())
 {
-    ui->setupUi(this);
-	this->move(0,0);
+	//this->ui->webView->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+	ui->setupUi(this);
+	//this->move(0,0);
 
     /*
     // connecting WebInspector
@@ -50,4 +51,9 @@ void QtMainWindow::on_webView_loadFinished(bool ok)
 void QtMainWindow::on_webView_urlChanged(QUrl url)
 {
     // url.toString()
+}
+
+void QtMainWindow::navigate(QUrl url)
+{
+	ui->webView->setUrl(url);
 }
