@@ -11,8 +11,8 @@ CMainWindowProxy::CMainWindowProxy(void):
 
 CMainWindowProxy::~CMainWindowProxy(void)
 {
-    if (qtApplication) delete (QApplication*)qtApplication;
     if (qtMainWindow) delete (QtMainWindow*)qtMainWindow;
+    if (qtApplication) delete (QApplication*)qtApplication;
 }
 
 void CMainWindowProxy::navigate(const wchar_t* url)
@@ -24,10 +24,15 @@ void* CMainWindowProxy::init(const wchar_t* title)
 {
     int argc = 0;
     qtApplication = (void*)new QApplication(argc, 0);
-	qtMainWindow = (void*)new QtMainWindow();
 
+	qtMainWindow = (void*)new QtMainWindow();
     ((QtMainWindow*)qtMainWindow)->setWindowTitle(QString::fromWCharArray(title));
     ((QtMainWindow*)qtMainWindow)->show();
 
 	return (void*)((QtMainWindow*)qtMainWindow)->winId();
+}
+
+void CMainWindowProxy::messageLoop(void)
+{
+	qApp->exec();
 }

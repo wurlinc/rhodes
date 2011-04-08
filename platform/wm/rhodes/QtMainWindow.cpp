@@ -3,35 +3,32 @@
 
 QtMainWindow::QtMainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::QtMainWindow) //, wi(new QWebInspector())
+    ui(new Ui::QtMainWindow),
+    wi(new QWebInspector())
 {
-	//this->ui->webView->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 	ui->setupUi(this);
-	//this->move(0,0);
+	this->ui->webView->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+	this->move(0,0);
 
-    /*
-    // connecting WebInspector
+	// connecting WebInspector
     wi->setWindowTitle("Web Inspector");
     wi->setPage(ui->webView->page());
-    wi->move(816, this->geometry().y());
+    wi->move(416, this->geometry().y());
     wi->resize(850, 600);
     wi->show();
-    */
 }
 
 QtMainWindow::~QtMainWindow()
 {
-    // delete wi;
+    delete wi;
     delete ui;
 }
 
-/*
 void QtMainWindow::closeEvent(QCloseEvent *ce)
 {
     wi->close();
     QMainWindow::closeEvent(ce);
 }
-*/
 
 void QtMainWindow::on_actionExit_triggered()
 {

@@ -1023,10 +1023,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MainWindow.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\MainWindowProxy.cpp"
 				>
 				<FileConfiguration
@@ -1043,6 +1039,29 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\MainWindowQt.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\MainWindowWin32.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1225,7 +1244,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MainWindowDef.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MainWindowProxy.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MainWindowQt.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MainWindowWin32.h"
 				>
 			</File>
 			<File

@@ -1,7 +1,7 @@
 // MainWindow.cpp: Defines main window for this application.
 
 #include "stdafx.h"
-#include "MainWindow.h"
+#include "MainWindowQt.h"
 #include "common/RhoStd.h"
 #include "common/StringConverter.h"
 
@@ -31,7 +31,13 @@ HWND CMainWindow::Initialize(const wchar_t* title)
 {
     HWND hWnd = (HWND)m_mainWindowProxy.init(title);
 	SubclassWindow(hWnd);
+    rho_rhodesapp_callUiCreatedCallback();
 	return hWnd;
+}
+
+void CMainWindow::MessageLoop(void)
+{
+	m_mainWindowProxy.messageLoop();
 }
 
 // **************************************************************************
@@ -187,3 +193,50 @@ LRESULT CMainWindow::OnNavigateCommand(WORD /*wNotifyCode*/, WORD /*wID*/, HWND 
     }
     return 0;
 }
+
+/*
+// **************************************************************************
+//
+// CMainWindow::TranslateAccelerator
+//
+// Required to forward messages to the PIEWebBrowser control (and any other
+// ActiveX controls that may be added to the main window's design).
+//
+// **************************************************************************
+BOOL CMainWindow::TranslateAccelerator(MSG* pMsg)
+{
+    // Accelerators are only keyboard or mouse messages
+    UINT uMsg = pMsg->message;
+    if (!(WM_KEYFIRST   <= uMsg && uMsg <= WM_KEYLAST) &&
+        !(WM_MOUSEFIRST <= uMsg && uMsg <= WM_MOUSELAST))
+    {
+        return FALSE;
+    }
+
+    if (NULL == m_hWnd)
+    {
+        return FALSE;
+    }
+
+    // Find a direct child of this window from the window that has focus.
+    // This will be AtlAxWin window for the hosted control.
+    CWindow control = ::GetFocus();
+    if (IsChild(control) && m_hWnd != control.GetParent())
+    {
+        do
+        {
+            control = control.GetParent();
+        } while (m_hWnd != control.GetParent());
+    }
+
+    // Give the control (via the AtlAxWin) a chance to translate this message
+    if (control.m_hWnd && control.SendMessage(WM_FORWARDMSG, 0, (LPARAM)pMsg))
+    {
+        return TRUE;
+    }
+
+    // If the main window used accelerators, we could have called the global
+    // ::TranslateAccelerator() function here, instead of simply returning FALSE.
+    return FALSE;
+}
+*/

@@ -2,7 +2,7 @@
 
 #include "common/IRhoThreadImpl.h"
 #include "ruby/ext/rho/rhoruby.h"
-#include "MainWindow.h"
+#include "MainWindowDef.h"
 
 class CNativeToolbar : public CWindowImpl<CNativeToolbar, CToolBarCtrl>
 {

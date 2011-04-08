@@ -197,8 +197,11 @@ public :
         dwStyle |= WS_OVERLAPPEDWINDOW;
 #endif
         // Create the main application window
-        //m_appWindow.Create(NULL, CWindow::rcDefault, convertToStringW(strTitle).c_str(), dwStyle);
+#ifndef MAINWINDOW_QT
+        m_appWindow.Create(NULL, CWindow::rcDefault, convertToStringW(strTitle).c_str(), dwStyle);
+#else
         m_appWindow.Initialize(convertToStringW(strTitle).c_str());
+#endif
         if (NULL == m_appWindow.m_hWnd)
         {
             return S_FALSE;
@@ -248,19 +251,19 @@ public :
 
     void RunMessageLoop( ) throw( )
     {
+#ifdef MAINWINDOW_QT
+		m_appWindow.MessageLoop();
+#else
         MSG msg;
         while (GetMessage(&msg, NULL, 0, 0))
         {
-#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
             if (!m_appWindow.TranslateAccelerator(&msg))
             {
-#endif
                 TranslateMessage(&msg);
                 DispatchMessage(&msg);
-#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
             }
-#endif
         }
+#endif
 
 #if defined(OS_WINCE)
         CGPSController* pGPS = CGPSController::Instance();

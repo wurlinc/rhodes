@@ -17,11 +17,11 @@ public:
     explicit QtMainWindow(QWidget *parent = 0);
     ~QtMainWindow();
     void navigate(QUrl url);
-    //virtual void closeEvent(QCloseEvent *);
+    virtual void closeEvent(QCloseEvent *);
 
 private:
     Ui::QtMainWindow *ui;
-    // QWebInspector *wi;
+    QWebInspector *wi;
 
 private slots:
     void on_webView_urlChanged(QUrl );
