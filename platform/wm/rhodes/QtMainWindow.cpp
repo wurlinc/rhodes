@@ -1,10 +1,12 @@
 #include "QtMainWindow.h"
 #include "ui_QtMainWindow.h"
+#include <QResizeEvent>
 
 QtMainWindow::QtMainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::QtMainWindow),
-    wi(new QWebInspector())
+    wi(new QWebInspector()),
+	cb(NULL)
 {
 	ui->setupUi(this);
 	this->ui->webView->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
@@ -24,10 +26,21 @@ QtMainWindow::~QtMainWindow()
     delete ui;
 }
 
+void QtMainWindow::setCallback(IMainWindowCallback* callback)
+{
+	cb = callback;
+}
+
 void QtMainWindow::closeEvent(QCloseEvent *ce)
 {
     wi->close();
     QMainWindow::closeEvent(ce);
+}
+
+void QtMainWindow::resizeEvent(QResizeEvent *event)
+{
+    if (cb)
+        cb->updateSizeProperties(event->size().width(), event->size().height()); // ui->webView
 }
 
 void QtMainWindow::on_actionExit_triggered()

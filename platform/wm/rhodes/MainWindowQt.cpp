@@ -19,6 +19,12 @@ CMainWindow::CMainWindow() { }
 
 CMainWindow::~CMainWindow() { }
 
+void CMainWindow::updateSizeProperties(int width, int height)
+{
+	m_screenWidth = width;
+	m_screenHeight = height;
+}
+
 void CMainWindow::Navigate2(BSTR URL) {
     String cleared_url = convertToStringA(OLE2CT(URL));
     if (!cleared_url.empty()) {
@@ -29,7 +35,7 @@ void CMainWindow::Navigate2(BSTR URL) {
 
 HWND CMainWindow::Initialize(const wchar_t* title)
 {
-    HWND hWnd = (HWND)m_mainWindowProxy.init(title);
+    HWND hWnd = (HWND)m_mainWindowProxy.init(this, title);
 	SubclassWindow(hWnd);
     rho_rhodesapp_callUiCreatedCallback();
 	return hWnd;
@@ -112,8 +118,8 @@ LRESULT CMainWindow::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
     return 0;
 }
 
-LRESULT CMainWindow::OnSize(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
-{
+//LRESULT CMainWindow::OnSize(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
+//{
     // USES_CONVERSION;
     // LOG(TRACE) + "Seting browser client area size to: " + (int)LOWORD(lParam) + " x " + (int)(HIWORD(lParam)-m_menuBarHeight-m_toolbar.getHeight());
     // m_browser.MoveWindow(0, 0, LOWORD(lParam), HIWORD(lParam)-m_menuBarHeight-m_toolbar.getHeight());
@@ -125,8 +131,8 @@ LRESULT CMainWindow::OnSize(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOO
 
     // TODO: put everything in place
 
-    return 0;
-}
+//    return 0;
+//}
 
 LRESULT CMainWindow::OnActivate(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL& /*bHandled*/)
 {

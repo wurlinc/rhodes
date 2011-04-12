@@ -9,6 +9,7 @@
 #include "rho/rubyext/NativeToolbar.h"
 #include "LogView.h"
 #include "MainWindowProxy.h"
+#include "MainWindowCallback.h"
 
 static UINT WM_TAKEPICTURE             = ::RegisterWindowMessage(L"RHODES_WM_TAKEPICTURE");
 static UINT WM_SELECTPICTURE           = ::RegisterWindowMessage(L"RHODES_WM_SELECTPICTURE");
@@ -22,12 +23,14 @@ static UINT WM_DATETIME_PICKER         = ::RegisterWindowMessage(L"RHODES_WM_DAT
 #define ID_CUSTOM_TOOLBAR_ITEM_LAST  (ID_CUSTOM_TOOLBAR_ITEM_FIRST + 20 - 1)
 
 class CMainWindow :
-    public CWindowImpl<CMainWindow, CWindow, CWinTraits<WS_BORDER | WS_SYSMENU | WS_MINIMIZEBOX | WS_CLIPCHILDREN | WS_CLIPSIBLINGS> >
+    public CWindowImpl<CMainWindow, CWindow, CWinTraits<WS_BORDER | WS_SYSMENU | WS_MINIMIZEBOX | WS_CLIPCHILDREN | WS_CLIPSIBLINGS> >,
+	public IMainWindowCallback
 {
     DEFINE_LOGCLASS;
 public:
     CMainWindow();
     ~CMainWindow();
+	virtual void updateSizeProperties(int width, int height);
     void Navigate2(BSTR URL);
 	HWND Initialize(const wchar_t* title);
 	void MessageLoop(void);
@@ -37,7 +40,7 @@ public:
     BEGIN_MSG_MAP(CMainWindow)
         MESSAGE_HANDLER(WM_CREATE, OnCreate)
         MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
-        MESSAGE_HANDLER(WM_SIZE, OnSize)
+        //MESSAGE_HANDLER(WM_SIZE, OnSize)
         MESSAGE_HANDLER(WM_ACTIVATE, OnActivate)
         COMMAND_ID_HANDLER(IDM_EXIT, OnExitCommand)
         COMMAND_ID_HANDLER(IDM_NAVIGATE_BACK, OnNavigateBackCommand)
@@ -52,7 +55,7 @@ private:
     // WM_xxx handlers
     LRESULT OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
     LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled);
-    LRESULT OnSize(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+    //LRESULT OnSize(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
     LRESULT OnActivate(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL& /*bHandled*/);
 
     // WM_COMMAND handlers
