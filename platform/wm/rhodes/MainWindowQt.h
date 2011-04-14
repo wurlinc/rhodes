@@ -8,6 +8,7 @@
 #include "RhoNativeViewManagerWM.h"
 #include "rho/rubyext/NativeToolbar.h"
 #include "LogView.h"
+#include "rho/rubyext/NativeToolbar.h"
 #include "MainWindowProxy.h"
 #include "MainWindowCallback.h"
 
@@ -16,6 +17,7 @@ static UINT WM_SELECTPICTURE           = ::RegisterWindowMessage(L"RHODES_WM_SEL
 static UINT WM_ALERT_SHOW_POPUP        = ::RegisterWindowMessage(L"RHODES_WM_ALERT_SHOW_POPUP");
 static UINT WM_ALERT_HIDE_POPUP        = ::RegisterWindowMessage(L"RHODES_WM_ALERT_HIDE_POPUP");
 static UINT WM_DATETIME_PICKER         = ::RegisterWindowMessage(L"RHODES_WM_DATETIME_PICKER");
+static UINT WM_EXECUTE_RUNNABLE		   = ::RegisterWindowMessage(L"RHODES_WM_EXECUTE_RUNNABLE");
 
 #define ID_CUSTOM_MENU_ITEM_FIRST (WM_APP+3)
 #define ID_CUSTOM_MENU_ITEM_LAST  (ID_CUSTOM_MENU_ITEM_FIRST + (APP_MENU_ITEMS_MAX) - 1)
@@ -34,8 +36,11 @@ public:
     void Navigate2(BSTR URL);
 	HWND Initialize(const wchar_t* title);
 	void MessageLoop(void);
+    void performOnUiThread(rho::common::IRhoRunnable* pTask);
     // Required to forward messages to the WebBrowser control
     // BOOL TranslateAccelerator(MSG* pMsg);
+    CNativeToolbar& getToolbar(){ return m_toolbar; }
+    CMainWindowProxy &getProxy(){ return m_mainWindowProxy; }
 
     BEGIN_MSG_MAP(CMainWindow)
         MESSAGE_HANDLER(WM_CREATE, OnCreate)
@@ -49,6 +54,7 @@ public:
         COMMAND_ID_HANDLER(IDM_LOG,OnLogCommand)
         COMMAND_ID_HANDLER(IDM_REFRESH, OnRefreshCommand)
         COMMAND_ID_HANDLER(IDM_NAVIGATE, OnNavigateCommand)
+        MESSAGE_HANDLER(WM_EXECUTE_RUNNABLE, OnExecuteRunnable);
     END_MSG_MAP()
 	
 private:
@@ -66,9 +72,13 @@ private:
     LRESULT OnLogCommand(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
     LRESULT OnRefreshCommand(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
     LRESULT OnNavigateCommand(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
+	LRESULT OnExecuteRunnable (UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
 	
 private:
     CLogView m_logView;
+    CNativeToolbar m_toolbar;
+    CMainWindowProxy m_mainWindowProxy;
 
 private:
     static int m_screenWidth;
@@ -77,9 +87,6 @@ private:
 public:
     static int getScreenWidth() {return m_screenWidth;}
     static int getScreenHeight() {return m_screenHeight;}
-
-private:
-    CMainWindowProxy m_mainWindowProxy;
 };
 
 #if !defined(_WIN32_WCE)

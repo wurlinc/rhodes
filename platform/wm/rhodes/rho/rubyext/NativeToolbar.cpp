@@ -2,6 +2,7 @@
 
 #include "NativeToolbar.h"
 #include "common/rhoparams.h"
+#include "MainWindowProxy.h"
 #include "MainWindow.h"
 #include "common/RhoFilePath.h"
 #include "rubyext/WebView.h"
@@ -16,8 +17,10 @@
 #define VTABBAR_TYPE		3
 
 extern CMainWindow& getAppWindow();
+#ifndef MAINWINDOW_QT
 IMPLEMENT_LOGCLASS(CNativeToolbar,"NativeToolbar");
 extern "C" int rho_wmsys_has_touchscreen();
+#endif
 
 using namespace rho;
 using namespace rho::common;
@@ -32,16 +35,18 @@ CNativeToolbar::~CNativeToolbar(void)
 
 void CNativeToolbar::OnFinalMessage(HWND /*hWnd*/)
 {
-    removeAllButtons();
+#ifdef MAINWINDOW_QT
+    getAppWindow().getProxy().
+#endif
+	removeAllButtons();
 }
 
-#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
 /*static*/ CNativeToolbar& CNativeToolbar::getInstance()
 {
     return getAppWindow().getToolbar();
 }
-#endif
 
+#ifndef MAINWINDOW_QT
 void CNativeToolbar::removeAllButtons()
 {
     if ( m_hWnd )
@@ -70,9 +75,13 @@ static int getColorFromString(const char* szColor)
 
     return RGB(cR, cG, cB);
 }
+#endif
 
 void CNativeToolbar::createToolbar(rho_param *p)
 {
+#ifdef MAINWINDOW_QT
+	getAppWindow().getProxy().createToolbar(p);
+#else
     if (!rho_rhodesapp_check_mode() || !rho_wmsys_has_touchscreen() )
         return;
 
@@ -135,7 +144,6 @@ void CNativeToolbar::createToolbar(rho_param *p)
         rcToolbar.bottom = m_nHeight;
         Create(getAppWindow().m_hWnd, rcToolbar, NULL, WS_CHILD|CCS_NOPARENTALIGN|CCS_NORESIZE|CCS_NOMOVEY|CCS_BOTTOM|CCS_NODIVIDER |
             TBSTYLE_FLAT |TBSTYLE_LIST|TBSTYLE_TRANSPARENT ); //TBSTYLE_AUTOSIZE
-
         SetButtonStructSize();
     }
 
@@ -212,8 +220,10 @@ void CNativeToolbar::createToolbar(rho_param *p)
 #else
     getAppWindow().SetWindowPos( 0, 0,0,0,0, SWP_NOMOVE|SWP_NOZORDER|SWP_NOSIZE|SWP_FRAMECHANGED);
 #endif
+#endif
 }
 
+#ifndef MAINWINDOW_QT
 void CNativeToolbar::alignSeparatorWidth()
 {
     int nSepPos = -1;
@@ -417,9 +427,13 @@ void CNativeToolbar::processCommand(int nItemPos)
             RHODESAPP().loadUrl(strAction);
     }
 }
+#endif
 
 void CNativeToolbar::removeToolbar()
 {
+#ifdef MAINWINDOW_QT
+	getAppWindow().getProxy().removeToolbar();
+#else
     if ( m_hWnd )
     {
         ShowWindow(SW_HIDE);
@@ -434,11 +448,25 @@ void CNativeToolbar::removeToolbar()
         getAppWindow().SetWindowPos( 0, 0,0,0,0, SWP_NOMOVE|SWP_NOZORDER|SWP_NOSIZE|SWP_FRAMECHANGED);
 #endif
     }
+#endif
+}
+
+int CNativeToolbar::getHeight()
+{
+#ifndef MAINWINDOW_QT
+		return m_nHeight;
+#else
+        return getAppWindow().getProxy().getHeight();
+#endif
 }
 
 bool CNativeToolbar::isStarted()
 {
+#ifndef MAINWINDOW_QT
     return m_hWnd && IsWindowVisible();
+#else
+	return getAppWindow().getProxy().isStarted();
+#endif
 }
 
 extern "C"
@@ -450,9 +478,7 @@ void create_native_toolbar(int bar_type, rho_param *p)
         remove_native_toolbar();
     else if ( bar_type == TOOLBAR_TYPE )
     {
-#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
         getAppWindow().performOnUiThread(new CNativeToolbar::CCreateTask(p) );
-#endif
     }else
     {
     	RAWLOGC_ERROR("NativeBar", "Only Toolbar control is supported.");
@@ -467,9 +493,7 @@ void create_nativebar(int bar_type, rho_param *p)
 
 void remove_native_toolbar() 
 {
-#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
     getAppWindow().performOnUiThread(new CNativeToolbar::CRemoveTask() );
-#endif
 }
 
 void remove_nativebar() 
@@ -481,10 +505,10 @@ void remove_nativebar()
 VALUE nativebar_started() 
 {
     bool bStarted = 
-#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
+#ifndef MAINWINDOW_QT
 		CNativeToolbar::getInstance().isStarted();
 #else
-		true;
+		getAppWindow().getProxy().isStarted();
 #endif
     return rho_ruby_create_boolean(bStarted?1:0);
 }

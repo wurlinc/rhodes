@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'QtMainWindow.h'
 **
-** Created: Fri 8. Apr 20:58:42 2011
+** Created: Thu 14. Apr 19:47:15 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_QtMainWindow[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       5,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -35,6 +35,7 @@ static const uint qt_meta_data_QtMainWindow[] = {
       42,   13,   13,   13, 0x08,
       72,   13,   13,   13, 0x08,
       97,   13,   13,   13, 0x08,
+     123,   13,   13,   13, 0x08,
 
        0        // eod
 };
@@ -44,6 +45,7 @@ static const char qt_meta_stringdata_QtMainWindow[] = {
     "on_webView_loadFinished(bool)\0"
     "on_webView_loadStarted()\0"
     "on_actionExit_triggered()\0"
+    "on_toolbarAction_triggered(bool)\0"
 };
 
 const QMetaObject QtMainWindow::staticMetaObject = {
@@ -79,9 +81,10 @@ int QtMainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 1: on_webView_loadFinished((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 2: on_webView_loadStarted(); break;
         case 3: on_actionExit_triggered(); break;
+        case 4: on_toolbarAction_triggered((*reinterpret_cast< bool(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 4;
+        _id -= 5;
     }
     return _id;
 }

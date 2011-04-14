@@ -4,7 +4,9 @@
 #include <QMainWindow>
 #include <QUrl>
 #include <QWebInspector>
+#include <QAction>
 #include "MainWindowCallback.h"
+#include "common/IRhoThreadImpl.h"
 
 namespace Ui {
     class QtMainWindow;
@@ -17,10 +19,21 @@ class QtMainWindow : public QMainWindow
 public:
     explicit QtMainWindow(QWidget *parent = 0);
     ~QtMainWindow();
-    void navigate(QUrl url);
     virtual void closeEvent(QCloseEvent *);
 	void setCallback(IMainWindowCallback* callback);
-
+	// webview
+    void navigate(QUrl url);
+	void GoBack(void);
+	void GoForward(void);
+	void Refresh(void);
+    // toolbar
+	void toolbarRemoveAllButtons(void);
+    void toolbarShow(void);
+    void toolbarHide(void);
+	int toolbarGetHeight(void);
+    void toolbarAddAction(const QString & text);
+    void toolbarAddAction(const QIcon & icon, const QString & text, const char* action);
+	void toolbarAddSeparator(void);
 private:
     Ui::QtMainWindow *ui;
     QWebInspector *wi;
@@ -28,9 +41,10 @@ private:
 
 private slots:
     void on_webView_urlChanged(QUrl );
-    void on_webView_loadFinished(bool );
+    void on_webView_loadFinished(bool);
     void on_webView_loadStarted();
     void on_actionExit_triggered();
+	void on_toolbarAction_triggered(bool);
 protected:
 	void resizeEvent(QResizeEvent *);
 };

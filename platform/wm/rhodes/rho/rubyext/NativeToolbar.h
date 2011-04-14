@@ -4,14 +4,21 @@
 #include "ruby/ext/rho/rhoruby.h"
 #include "MainWindowDef.h"
 
-class CNativeToolbar : public CWindowImpl<CNativeToolbar, CToolBarCtrl>
+class CNativeToolbar
+#ifndef MAINWINDOW_QT
+	: public CWindowImpl<CNativeToolbar, CToolBarCtrl>
+#endif
 {
+#ifndef MAINWINDOW_QT
     DEFINE_LOGCLASS;
+#endif
 
+public:
     static const int  MIN_TOOLBAR_HEIGHT = 60;
+#ifndef MAINWINDOW_QT
     static const int  MIN_TOOLBAR_IDENT = 12;
 
-    int        m_nHeight;
+	int        m_nHeight;
     COLORREF   m_rgbBackColor, m_rgbMaskColor;
     CImageList m_listImages;
 
@@ -32,6 +39,8 @@ class CNativeToolbar : public CWindowImpl<CNativeToolbar, CToolBarCtrl>
     };
 
     rho::VectorPtr<CToolbarBtn*> m_arButtons;
+#endif
+
 public:
     class CCreateTask: public rho::common::IRhoRunnable
     {
@@ -40,46 +49,44 @@ public:
         CCreateTask(rho_param *p) : m_param(rho_param_dup(p)){ }
         ~CCreateTask(){ rho_param_free(m_param); }
         virtual void runObject(){
-#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
 			CNativeToolbar::getInstance().createToolbar(m_param);
-#endif
 		}
     };
     class CRemoveTask: public rho::common::IRhoRunnable
     {
     public:
         virtual void runObject(){
-#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
 			CNativeToolbar::getInstance().removeToolbar(); 
-#endif
 		}
     };
 
+public:
     CNativeToolbar(void);
     ~CNativeToolbar(void);
 
-#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
     static CNativeToolbar& getInstance();
-#endif
 
+#ifndef MAINWINDOW_QT
 	BEGIN_MSG_MAP(CNativeToolbar)
 		MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBkgnd)
         //MESSAGE_HANDLER(WM_PAINT, OnPaint)
 	END_MSG_MAP()
 	LRESULT OnEraseBkgnd(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled);
+#endif
     virtual void OnFinalMessage(HWND /*hWnd*/);
 
-    int getHeight(){ return m_nHeight;}
-
-    void processCommand(int nItemPos);
+    int getHeight();
     bool isStarted();
-private:
 
+#ifndef MAINWINDOW_QT
+    void processCommand(int nItemPos);
+private:
     void addToolbarButton(CToolbarBtn& oButton, int nPos);
     void removeAllButtons();
     CSize getMaxImageSize();
     void alignSeparatorWidth();
-
+#endif
+private:
     void createToolbar(rho_param *param);
     void removeToolbar();
 };

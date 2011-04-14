@@ -99,6 +99,21 @@ LRESULT CMainWindow::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*
     return SUCCEEDED(hr) ? 0 : -1;
 }
 
+void CMainWindow::performOnUiThread(rho::common::IRhoRunnable* pTask)
+{
+	PostMessage(WM_EXECUTE_RUNNABLE, 0, (LPARAM)pTask);
+}
+LRESULT CMainWindow::OnExecuteRunnable(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL& /*bHandled*/) 
+{
+    rho::common::IRhoRunnable* pTask = (rho::common::IRhoRunnable*)lParam;
+	if (pTask)
+    {
+		pTask->runObject();
+        delete pTask;
+    }
+	return 0;
+}
+
 //HWND CMainWindow::getWebViewHWND() {
 //	return NULL;
 //}
@@ -158,13 +173,13 @@ LRESULT CMainWindow::OnExitCommand(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hW
 
 LRESULT CMainWindow::OnNavigateBackCommand(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-    // TODO: m_spIWebBrowser2->GoBack();
+    m_mainWindowProxy.GoBack();
     return 0;
 }
 
 LRESULT CMainWindow::OnNavigateForwardCommand(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-    // TODO: m_spIWebBrowser2->GoForward();
+    m_mainWindowProxy.GoForward();
     return 0;
 }
 
@@ -186,7 +201,7 @@ LRESULT CMainWindow::OnLogCommand(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWn
 
 LRESULT CMainWindow::OnRefreshCommand(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-    // TODO: if (m_spIWebBrowser2) m_spIWebBrowser2->Refresh();
+    m_mainWindowProxy.Refresh();
     return 0;
 }
 
