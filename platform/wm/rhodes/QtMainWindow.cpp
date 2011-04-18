@@ -68,17 +68,20 @@ void QtMainWindow::on_actionExit_triggered()
 
 void QtMainWindow::on_webView_loadStarted()
 {
-    ui->statusBar->showMessage("Loading...");
+    //ui->statusBar->showMessage("Loading...");
+	if (cb) cb->logEvent("WebView: loading...");
 }
 
 void QtMainWindow::on_webView_loadFinished(bool ok)
 {
-    ui->statusBar->showMessage((ok?"Loaded ":"Failed ")+ui->webView->url().toString());
+    //ui->statusBar->showMessage((ok?"Loaded ":"Failed ")+ui->webView->url().toString());
+	if (cb) cb->logEvent((ok?"WebView: loaded ":"WebView: failed "));
 }
 
 void QtMainWindow::on_webView_urlChanged(QUrl url)
 {
     // url.toString()
+    if (cb) cb->logEvent("WebView: URL changed");
 }
 
 void QtMainWindow::navigate(QUrl url)

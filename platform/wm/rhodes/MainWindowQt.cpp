@@ -25,6 +25,11 @@ void CMainWindow::updateSizeProperties(int width, int height)
 	m_screenHeight = height;
 }
 
+void CMainWindow::logEvent(const ::std::string& message)
+{
+    LOG(INFO) + message;
+}
+
 void CMainWindow::Navigate2(BSTR URL) {
     String cleared_url = convertToStringA(OLE2CT(URL));
     if (!cleared_url.empty()) {

@@ -36,6 +36,7 @@ public:
 	// IMainWindowCallback
 	virtual void updateSizeProperties(int width, int height);
 	virtual void onActivate(int active);
+	virtual void logEvent(const ::std::string& message);
 	// public methods:
     void Navigate2(BSTR URL);
 	HWND Initialize(const wchar_t* title);

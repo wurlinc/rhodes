@@ -36,6 +36,7 @@ CMainWindowProxy::~CMainWindowProxy(void)
 
 void CMainWindowProxy::navigate(const wchar_t* url)
 {
+    LOG(INFO) + "navigate: '"+url+"'";
 	((QtMainWindow*)qtMainWindow)->navigate(QUrl(QString::fromWCharArray(url)));
 }
 
@@ -58,21 +59,37 @@ void* CMainWindowProxy::init(IMainWindowCallback* callback, const wchar_t* title
 
 void CMainWindowProxy::messageLoop(void)
 {
+	/*
+	while (1) {
+		qApp->processEvents();
+        MSG msg;
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+            LOG(INFO) + "peeked message";
+            TranslateMessage(&msg);
+            LOG(INFO) + "translated message";
+            DispatchMessage(&msg);
+            LOG(INFO) + "dispatched message";
+        }
+	}
+	*/
 	qApp->exec();
 }
 
 void CMainWindowProxy::GoBack(void)
 {
+    LOG(INFO) + "back";
 	((QtMainWindow*)qtMainWindow)->GoBack();
 }
 
 void CMainWindowProxy::GoForward(void)
 {
+    LOG(INFO) + "forward";
 	((QtMainWindow*)qtMainWindow)->GoForward();
 }
 
 void CMainWindowProxy::Refresh(void)
 {
+    LOG(INFO) + "refresh";
 	((QtMainWindow*)qtMainWindow)->Refresh();
 }
 
