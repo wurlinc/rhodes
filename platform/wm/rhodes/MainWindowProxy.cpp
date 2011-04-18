@@ -10,6 +10,8 @@
 #include <QtGui/QAction>
 #include "QtMainWindow.h"
 
+IMPLEMENT_LOGCLASS(CMainWindowProxy,"MainWindowProxy");
+
 extern "C" int rho_wmsys_has_touchscreen();
 
 #define TOOLBAR_TYPE		0
@@ -209,6 +211,8 @@ void CMainWindowProxy::createToolbar(rho_param *p)
             continue;
 
         if (!action) action = "";
+
+        LOG(INFO) + "addToolbarButton: Label: '"+label+"';Action: '"+action+"'";
 		if (strcasecmp(action, "separator")==0) {
             ((QtMainWindow*)qtMainWindow)->toolbarAddSeparator();
 		} else {

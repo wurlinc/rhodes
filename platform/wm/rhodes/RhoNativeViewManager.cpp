@@ -257,10 +257,8 @@ NativeViewFactory* RhoNativeViewManagerWM::getFactoryByViewType(const char* view
 }
 
 void RhoNativeViewUtil::executeInUIThread_WM(RhoNativeViewRunnable* command) {
-#ifndef MAINWINDOW_LIMITED_FUNCTIONALITY
 	HWND main_wnd = getMainWnd();
 	::PostMessage(main_wnd, WM_EXECUTE_COMMAND, (WPARAM)command, 0);
-#endif
 }
 
 extern "C" int rho_native_view_manager_create_native_view(const char* viewtype, int tab_index, VALUE params) {

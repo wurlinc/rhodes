@@ -15,4 +15,5 @@
 // MiniPIE.pch will be the pre-compiled header
 // stdafx.obj will contain the pre-compiled type information
 
+#pragma warning ( disable : 4996 )
 #include "stdafx.h"

@@ -27,6 +27,7 @@
 #ifdef _MSC_VER
 // warning C4018: '<' : signed/unsigned mismatch
 #pragma warning ( disable : 4018 )
+#pragma warning ( disable : 4996 )
 #endif
 
 #include "bits.h"

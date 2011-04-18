@@ -2,10 +2,12 @@
 
 #include <string>
 #include "common/rhoparams.h"
+#include "logging/RhoLog.h"
 #include "MainWindowCallback.h"
 
 class CMainWindowProxy
 {
+    DEFINE_LOGCLASS;
 public:
 	CMainWindowProxy(void);
 	~CMainWindowProxy(void);

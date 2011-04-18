@@ -4,14 +4,20 @@
 #include "ruby/ext/rho/rhoruby.h"
 #include "MainWindowDef.h"
 
+#if defined(OS_WINDOWS)
+#include <atlbase.h>
+#include <atlapp.h>
+#include <atlctrls.h>
+#include <atldlgs.h>
+#include <atlmisc.h>
+#endif
+
 class CNativeToolbar
 #ifndef MAINWINDOW_QT
 	: public CWindowImpl<CNativeToolbar, CToolBarCtrl>
 #endif
 {
-#ifndef MAINWINDOW_QT
     DEFINE_LOGCLASS;
-#endif
 
 public:
     static const int  MIN_TOOLBAR_HEIGHT = 60;

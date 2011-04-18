@@ -17,6 +17,10 @@
 #include <limits.h>
 #include <string.h>
 
+#ifdef _MSC_VER
+#pragma warning ( disable : 4996 )
+#endif
+
 #if !defined(_WIN32_WCE)
 #include <errno.h>
 #endif

@@ -17,6 +17,7 @@ static UINT WM_SELECTPICTURE           = ::RegisterWindowMessage(L"RHODES_WM_SEL
 static UINT WM_ALERT_SHOW_POPUP        = ::RegisterWindowMessage(L"RHODES_WM_ALERT_SHOW_POPUP");
 static UINT WM_ALERT_HIDE_POPUP        = ::RegisterWindowMessage(L"RHODES_WM_ALERT_HIDE_POPUP");
 static UINT WM_DATETIME_PICKER         = ::RegisterWindowMessage(L"RHODES_WM_DATETIME_PICKER");
+static UINT WM_EXECUTE_COMMAND		   = ::RegisterWindowMessage(L"RHODES_WM_EXECUTE_COMMAND");
 static UINT WM_EXECUTE_RUNNABLE		   = ::RegisterWindowMessage(L"RHODES_WM_EXECUTE_RUNNABLE");
 
 #define ID_CUSTOM_MENU_ITEM_FIRST (WM_APP+3)
@@ -32,21 +33,20 @@ class CMainWindow :
 public:
     CMainWindow();
     ~CMainWindow();
+	// IMainWindowCallback
 	virtual void updateSizeProperties(int width, int height);
+	virtual void onActivate(int active);
+	// public methods:
     void Navigate2(BSTR URL);
 	HWND Initialize(const wchar_t* title);
 	void MessageLoop(void);
     void performOnUiThread(rho::common::IRhoRunnable* pTask);
-    // Required to forward messages to the WebBrowser control
-    // BOOL TranslateAccelerator(MSG* pMsg);
     CNativeToolbar& getToolbar(){ return m_toolbar; }
     CMainWindowProxy &getProxy(){ return m_mainWindowProxy; }
 
     BEGIN_MSG_MAP(CMainWindow)
-        MESSAGE_HANDLER(WM_CREATE, OnCreate)
         MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
-        //MESSAGE_HANDLER(WM_SIZE, OnSize)
-        MESSAGE_HANDLER(WM_ACTIVATE, OnActivate)
+        //MESSAGE_HANDLER(WM_ACTIVATE, OnActivate)
         COMMAND_ID_HANDLER(IDM_EXIT, OnExitCommand)
         COMMAND_ID_HANDLER(IDM_NAVIGATE_BACK, OnNavigateBackCommand)
         COMMAND_ID_HANDLER(IDM_NAVIGATE_FORWARD, OnNavigateForwardCommand)
@@ -54,15 +54,14 @@ public:
         COMMAND_ID_HANDLER(IDM_LOG,OnLogCommand)
         COMMAND_ID_HANDLER(IDM_REFRESH, OnRefreshCommand)
         COMMAND_ID_HANDLER(IDM_NAVIGATE, OnNavigateCommand)
+		MESSAGE_HANDLER(WM_EXECUTE_COMMAND, OnExecuteCommand);
         MESSAGE_HANDLER(WM_EXECUTE_RUNNABLE, OnExecuteRunnable);
     END_MSG_MAP()
 	
 private:
     // WM_xxx handlers
-    LRESULT OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
     LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled);
-    //LRESULT OnSize(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
-    LRESULT OnActivate(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL& /*bHandled*/);
+    //LRESULT OnActivate(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL& /*bHandled*/);
 
     // WM_COMMAND handlers
     LRESULT OnExitCommand(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
@@ -73,6 +72,7 @@ private:
     LRESULT OnRefreshCommand(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
     LRESULT OnNavigateCommand(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
+	LRESULT OnExecuteCommand (UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
 	LRESULT OnExecuteRunnable (UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
 	
 private:

@@ -18,12 +18,14 @@ QtMainWindow::QtMainWindow(QWidget *parent) :
 	this->move(0,0);
 	this->ui->toolBar->hide();
 
+#ifdef MAINWINDOW_SHOW_WEBINSPECTOR
 	// connecting WebInspector
     wi->setWindowTitle("Web Inspector");
     wi->setPage(ui->webView->page());
     wi->move(416, this->geometry().y());
     wi->resize(850, 600);
     wi->show();
+#endif
 }
 
 QtMainWindow::~QtMainWindow()
@@ -35,6 +37,16 @@ QtMainWindow::~QtMainWindow()
 void QtMainWindow::setCallback(IMainWindowCallback* callback)
 {
 	cb = callback;
+}
+
+void QtMainWindow::hideEvent(QHideEvent *)
+{
+    if (cb) cb->onActivate(0);
+}
+
+void QtMainWindow::showEvent(QShowEvent *)
+{
+    if (cb) cb->onActivate(1);
 }
 
 void QtMainWindow::closeEvent(QCloseEvent *ce)
@@ -123,7 +135,7 @@ void QtMainWindow::on_toolbarAction_triggered(bool checked)
 		if ( strcasecmp(strAction.c_str(), "forward") == 0 )
 			rho_webview_navigate_forward();
 		else
-		   RHODESAPP().loadUrl(strAction);
+		    RHODESAPP().loadUrl(strAction);
 	}
 }
 

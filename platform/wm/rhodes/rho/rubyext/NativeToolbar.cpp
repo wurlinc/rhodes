@@ -6,6 +6,10 @@
 #include "MainWindow.h"
 #include "common/RhoFilePath.h"
 #include "rubyext/WebView.h"
+#undef null
+#include <QString>
+#include <QApplication>
+#include <QtGui/QAction>
 
 #ifndef max
 #define max(a,b)            (((a) > (b)) ? (a) : (b))
@@ -17,8 +21,8 @@
 #define VTABBAR_TYPE		3
 
 extern CMainWindow& getAppWindow();
-#ifndef MAINWINDOW_QT
 IMPLEMENT_LOGCLASS(CNativeToolbar,"NativeToolbar");
+#ifndef MAINWINDOW_QT
 extern "C" int rho_wmsys_has_touchscreen();
 #endif
 

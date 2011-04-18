@@ -19,6 +19,8 @@ class QtMainWindow : public QMainWindow
 public:
     explicit QtMainWindow(QWidget *parent = 0);
     ~QtMainWindow();
+    virtual void hideEvent(QHideEvent *);
+    virtual void showEvent(QShowEvent *);
     virtual void closeEvent(QCloseEvent *);
 	void setCallback(IMainWindowCallback* callback);
 	// webview

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'QtMainWindow.h'
 **
-** Created: Fri 8. Apr 02:22:03 2011
+** Created: Fri 15. Apr 19:09:38 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -32,20 +32,20 @@ static const uint qt_meta_data_QtMainWindow[] = {
 
  // slots: signature, parameters, type, tag, flags
       14,   13,   13,   13, 0x08,
-      38,   13,   13,   13, 0x08,
-      66,   13,   13,   13, 0x08,
-      96,   13,   13,   13, 0x08,
-     121,   13,   13,   13, 0x08,
+      42,   13,   13,   13, 0x08,
+      72,   13,   13,   13, 0x08,
+      97,   13,   13,   13, 0x08,
+     123,   13,   13,   13, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_QtMainWindow[] = {
-    "QtMainWindow\0\0on_actionGo_triggered()\0"
-    "on_webView_urlChanged(QUrl)\0"
+    "QtMainWindow\0\0on_webView_urlChanged(QUrl)\0"
     "on_webView_loadFinished(bool)\0"
     "on_webView_loadStarted()\0"
     "on_actionExit_triggered()\0"
+    "on_toolbarAction_triggered(bool)\0"
 };
 
 const QMetaObject QtMainWindow::staticMetaObject = {
@@ -77,11 +77,11 @@ int QtMainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: on_actionGo_triggered(); break;
-        case 1: on_webView_urlChanged((*reinterpret_cast< QUrl(*)>(_a[1]))); break;
-        case 2: on_webView_loadFinished((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 3: on_webView_loadStarted(); break;
-        case 4: on_actionExit_triggered(); break;
+        case 0: on_webView_urlChanged((*reinterpret_cast< QUrl(*)>(_a[1]))); break;
+        case 1: on_webView_loadFinished((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 2: on_webView_loadStarted(); break;
+        case 3: on_actionExit_triggered(); break;
+        case 4: on_toolbarAction_triggered((*reinterpret_cast< bool(*)>(_a[1]))); break;
         default: ;
         }
         _id -= 5;

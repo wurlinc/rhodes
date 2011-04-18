@@ -5,6 +5,7 @@ class IMainWindowCallback
 {
 public:
 	virtual void updateSizeProperties(int width, int height) = 0;
+	virtual void onActivate(int active) = 0;
 protected:
 	virtual ~IMainWindowCallback() {};
 };

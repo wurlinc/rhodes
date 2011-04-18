@@ -1064,6 +1064,14 @@
 						Name="VCCLCompilerTool"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\menubar.cpp"
@@ -1417,6 +1425,7 @@
 						>
 						<Tool
 							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
 							ObjectFile="$(IntDir)\$(InputName)1.obj"
 							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 						/>
