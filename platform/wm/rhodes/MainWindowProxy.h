@@ -24,6 +24,10 @@ public:
     void createToolbar(rho_param *p);
     void removeToolbar();
 	void removeAllButtons();
+	// menu proxy
+    void menuClear();
+    void menuAddSeparator();
+    void menuAddAction(const char* label, int item);
 private:
 	void* qtMainWindow;
 	void* qtApplication;

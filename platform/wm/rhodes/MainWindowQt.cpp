@@ -4,6 +4,8 @@
 #include "MainWindowQt.h"
 #include "common/RhoStd.h"
 #include "common/StringConverter.h"
+#include "common/RhoFilePath.h"
+#include "AppManager.h"
 
 IMPLEMENT_LOGCLASS(CMainWindow,"MainWindow");
 
@@ -51,6 +53,56 @@ void CMainWindow::MessageLoop(void)
 {
 	m_mainWindowProxy.messageLoop();
 }
+
+void CMainWindow::createCustomMenu(void)
+{
+	RHODESAPP().getAppMenu().copyMenuItems(m_arAppMenuItems);
+	//m_mainWindowProxy.createCustomMenu();
+#ifdef ENABLE_DYNAMIC_RHOBUNDLE
+    String strIndexPage = CFilePath::join(RHODESAPP().getStartUrl(),"index_erb.iseq");
+    if ( RHODESAPP().getCurrentUrl().compare(RHODESAPP().getStartUrl()) == 0 ||
+         RHODESAPP().getCurrentUrl().compare(strIndexPage) == 0 )
+        m_arAppMenuItems.addElement(CAppMenuItem("Reload RhoBundle","reload_rhobundle"));
+#endif //ENABLE_DYNAMIC_RHOBUNDLE
+
+	//update UI with custom menu items
+	m_mainWindowProxy.menuClear();
+    for ( int i = m_arAppMenuItems.size() - 1; i >= 0; i--)
+    {
+        CAppMenuItem& oItem = m_arAppMenuItems.elementAt(i);
+        if (oItem.m_eType == CAppMenuItem::emtSeparator) 
+			m_mainWindowProxy.menuAddSeparator();
+		else
+        {
+			m_mainWindowProxy.menuAddAction((oItem.m_eType == CAppMenuItem::emtClose ? "Exit" : oItem.m_strLabel.c_str()), i);
+        }
+    }
+}
+
+void CMainWindow::onCustomMenuItemCommand(int nItemPos)
+{	
+    if ( nItemPos < 0 || nItemPos >= (int)m_arAppMenuItems.size() )
+        return;
+
+	CAppMenuItem& oMenuItem = m_arAppMenuItems.elementAt(nItemPos);
+    if ( oMenuItem.m_eType == CAppMenuItem::emtUrl )
+    {
+        if ( oMenuItem.m_strLink == "reload_rhobundle" )
+        {
+        #ifdef ENABLE_DYNAMIC_RHOBUNDLE
+	        if ( RHODESAPP().getRhobundleReloadUrl().length()>0 ) {
+		        CAppManager::ReloadRhoBundle(m_hWnd,RHODESAPP().getRhobundleReloadUrl().c_str(), NULL);
+	        } else {
+		        MessageBox(_T("Path to the bundle is not defined."),_T("Information"), MB_OK | MB_ICONINFORMATION );
+	        }
+        #endif
+            return;
+        }
+    }
+
+    oMenuItem.processCommand();
+}
+
 
 // **************************************************************************
 //

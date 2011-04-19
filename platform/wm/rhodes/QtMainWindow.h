@@ -37,6 +37,10 @@ public:
     void toolbarAddAction(const QString & text);
     void toolbarAddAction(const QIcon & icon, const QString & text, const char* action);
 	void toolbarAddSeparator(void);
+	// menu
+	void menuClear(void);
+    void menuAddAction(const QString & text, int item);
+	void menuAddSeparator(void);
 private:
     Ui::QtMainWindow *ui;
     QWebInspector *wi;
@@ -46,8 +50,10 @@ private slots:
     void on_webView_urlChanged(QUrl );
     void on_webView_loadFinished(bool);
     void on_webView_loadStarted();
-    void on_actionExit_triggered();
+    void on_actionBack_triggered();
 	void on_toolbarAction_triggered(bool);
+	void on_menuAction_triggered(bool);
+	void on_menuMain_aboutToShow();
 protected:
 	void resizeEvent(QResizeEvent *);
 };

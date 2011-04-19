@@ -242,3 +242,18 @@ void CMainWindowProxy::createToolbar(rho_param *p)
 	}
     ((QtMainWindow*)qtMainWindow)->toolbarShow();
 }
+
+void CMainWindowProxy::menuClear()
+{
+	((QtMainWindow*)qtMainWindow)->menuClear();
+}
+
+void CMainWindowProxy::menuAddSeparator()
+{
+	((QtMainWindow*)qtMainWindow)->menuAddSeparator();
+}
+
+void CMainWindowProxy::menuAddAction(const char* label, int item)
+{
+	((QtMainWindow*)qtMainWindow)->menuAddAction(QString(label), item);
+}

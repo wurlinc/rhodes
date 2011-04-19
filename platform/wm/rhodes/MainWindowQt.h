@@ -7,6 +7,9 @@
 #include "common/RhodesApp.h"
 #include "RhoNativeViewManagerWM.h"
 #include "rho/rubyext/NativeToolbar.h"
+#if defined(OS_WINDOWS)
+#include "menubar.h"
+#endif
 #include "LogView.h"
 #include "rho/rubyext/NativeToolbar.h"
 #include "MainWindowProxy.h"
@@ -37,6 +40,8 @@ public:
 	virtual void updateSizeProperties(int width, int height);
 	virtual void onActivate(int active);
 	virtual void logEvent(const ::std::string& message);
+	virtual void createCustomMenu(void);
+    virtual void onCustomMenuItemCommand(int nItemPos);
 	// public methods:
     void Navigate2(BSTR URL);
 	HWND Initialize(const wchar_t* title);
@@ -75,7 +80,7 @@ private:
 
 	LRESULT OnExecuteCommand (UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
 	LRESULT OnExecuteRunnable (UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
-	
+
 private:
     CLogView m_logView;
     CNativeToolbar m_toolbar;
@@ -88,6 +93,9 @@ private:
 public:
     static int getScreenWidth() {return m_screenWidth;}
     static int getScreenHeight() {return m_screenHeight;}
+
+private:
+    rho::Vector<rho::common::CAppMenuItem> m_arAppMenuItems;
 };
 
 #if !defined(_WIN32_WCE)

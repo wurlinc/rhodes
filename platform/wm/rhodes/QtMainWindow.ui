@@ -44,13 +44,19 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
+   <widget class="QMenu" name="menuMain">
     <property name="title">
-     <string>File</string>
+     <string>Main</string>
     </property>
-    <addaction name="actionExit"/>
    </widget>
-   <addaction name="menuFile"/>
+   <widget class="QMenu" name="menuNavigate">
+    <property name="title">
+     <string>Navigate</string>
+    </property>
+    <addaction name="actionBack"/>
+   </widget>
+   <addaction name="menuMain"/>
+   <addaction name="menuNavigate"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="toolBar">
@@ -94,9 +100,9 @@
     <bool>false</bool>
    </attribute>
   </widget>
-  <action name="actionExit">
+  <action name="actionBack">
    <property name="text">
-    <string>Exit</string>
+    <string>Back</string>
    </property>
   </action>
  </widget>

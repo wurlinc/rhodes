@@ -61,9 +61,9 @@ void QtMainWindow::resizeEvent(QResizeEvent *event)
         cb->updateSizeProperties(event->size().width(), event->size().height()); // ui->webView
 }
 
-void QtMainWindow::on_actionExit_triggered()
+void QtMainWindow::on_actionBack_triggered()
 {
-    close();
+	ui->webView->back();
 }
 
 void QtMainWindow::on_webView_loadStarted()
@@ -82,6 +82,11 @@ void QtMainWindow::on_webView_urlChanged(QUrl url)
 {
     // url.toString()
     if (cb) cb->logEvent("WebView: URL changed");
+}
+
+void QtMainWindow::on_menuMain_aboutToShow()
+{
+	if (cb) cb->createCustomMenu();
 }
 
 void QtMainWindow::navigate(QUrl url)
@@ -153,4 +158,30 @@ void QtMainWindow::toolbarAddAction(const QIcon & icon, const QString & text, co
 void QtMainWindow::toolbarAddSeparator()
 {
 	ui->toolBar->addSeparator();
+}
+
+void QtMainWindow::menuAddAction(const QString & text, int item)
+{
+	QAction* qAction = new QAction(text, ui->toolBar);
+	qAction->setData(QVariant(item));
+	QObject::connect(qAction, SIGNAL(triggered(bool)), this, SLOT(on_menuAction_triggered(bool)) );
+	ui->menuMain->addAction(qAction);
+}
+
+void QtMainWindow::menuClear(void)
+{
+	ui->menuMain->clear();
+}
+
+void QtMainWindow::menuAddSeparator()
+{
+	ui->menuMain->addSeparator();
+}
+
+void QtMainWindow::on_menuAction_triggered(bool checked)
+{
+	QObject* sender = QObject::sender();
+	QAction* action;
+	if (sender && (action = dynamic_cast<QAction*>(sender)) && cb)
+		cb->onCustomMenuItemCommand(action->data().toInt());
 }
