@@ -35,7 +35,7 @@ public:
     void toolbarHide(void);
 	int toolbarGetHeight(void);
     void toolbarAddAction(const QString & text);
-    void toolbarAddAction(const QIcon & icon, const QString & text, const char* action);
+    void toolbarAddAction(const QIcon & icon, const QString & text, const char* action, bool rightAlign = false);
 	void toolbarAddSeparator(void);
 	// menu
 	void menuClear(void);

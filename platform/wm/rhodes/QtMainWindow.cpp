@@ -68,20 +68,17 @@ void QtMainWindow::on_actionBack_triggered()
 
 void QtMainWindow::on_webView_loadStarted()
 {
-    //ui->statusBar->showMessage("Loading...");
 	if (cb) cb->logEvent("WebView: loading...");
 }
 
 void QtMainWindow::on_webView_loadFinished(bool ok)
 {
-    //ui->statusBar->showMessage((ok?"Loaded ":"Failed ")+ui->webView->url().toString());
-	if (cb) cb->logEvent((ok?"WebView: loaded ":"WebView: failed "));
+	if (cb) cb->logEvent((ok?"WebView: loaded ":"WebView: failed ")); // +ui->webView->url().toString()
 }
 
 void QtMainWindow::on_webView_urlChanged(QUrl url)
 {
-    // url.toString()
-    if (cb) cb->logEvent("WebView: URL changed");
+    if (cb) cb->logEvent("WebView: URL changed"); // url.toString()
 }
 
 void QtMainWindow::on_menuMain_aboutToShow()
@@ -147,12 +144,15 @@ void QtMainWindow::on_toolbarAction_triggered(bool checked)
 	}
 }
 
-void QtMainWindow::toolbarAddAction(const QIcon & icon, const QString & text, const char* action)
+void QtMainWindow::toolbarAddAction(const QIcon & icon, const QString & text, const char* action, bool rightAlign)
 {
 	QAction* qAction = new QAction(icon, text, ui->toolBar);
 	qAction->setData(QVariant(action));
 	QObject::connect(qAction, SIGNAL(triggered(bool)), this, SLOT(on_toolbarAction_triggered(bool)) );
-	ui->toolBar->addAction(qAction);
+	if (rightAlign)
+		ui->toolBarRight->insertAction( (ui->toolBarRight->actions().size() > 0 ? ui->toolBarRight->actions().last() : 0), qAction);
+	else
+	    ui->toolBar->addAction(qAction);
 }
 
 void QtMainWindow::toolbarAddSeparator()

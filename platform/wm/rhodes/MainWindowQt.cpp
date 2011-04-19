@@ -67,7 +67,7 @@ void CMainWindow::createCustomMenu(void)
 
 	//update UI with custom menu items
 	m_mainWindowProxy.menuClear();
-    for ( int i = m_arAppMenuItems.size() - 1; i >= 0; i--)
+    for ( unsigned int i = 0; i < m_arAppMenuItems.size(); i++)
     {
         CAppMenuItem& oItem = m_arAppMenuItems.elementAt(i);
         if (oItem.m_eType == CAppMenuItem::emtSeparator) 

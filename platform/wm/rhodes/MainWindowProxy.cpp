@@ -169,75 +169,87 @@ void CMainWindowProxy::createToolbar(rho_param *p)
 
     removeAllButtons();
 
-    for (int i = 0; i < size; ++i) 
-    {
-        rho_param *hash = params->v.array->value[i];
-        if (hash->type != RHO_PARAM_HASH) {
-            LOG(ERROR) + "Unexpected type of array item for create_nativebar, should be Hash";
-            return;
-        }
-        
-        const char *label = NULL;
-        const char *action = NULL;
-        const char *icon = NULL;
-        const char *colored_icon = NULL;
-		int  nItemWidth = 0;
-
-        for (int j = 0, lim = hash->v.hash->size; j < lim; ++j) 
-        {
-            const char *name = hash->v.hash->name[j];
-            rho_param *value = hash->v.hash->value[j];
-            if (value->type != RHO_PARAM_STRING) {
-                LOG(ERROR) + "Unexpected '" + name + "' type, should be String";
-                return;
-            }
-            
-            if (strcasecmp(name, "label") == 0)
-                label = value->v.string;
-            else if (strcasecmp(name, "action") == 0)
-                action = value->v.string;
-            else if (strcasecmp(name, "icon") == 0)
-                icon = value->v.string;
-            else if (strcasecmp(name, "colored_icon") == 0)
-                colored_icon = value->v.string;
-            else if (strcasecmp(name, "width") == 0)
-                nItemWidth = atoi(value->v.string);
-        }
-        
-        if (label == NULL && bar_type == TOOLBAR_TYPE)
-            label = "";
-        
-        if ( label == NULL || action == NULL) {
-            LOG(ERROR) + "Illegal argument for create_nativebar";
-            return;
-        }
-        if ( strcasecmp(action, "forward") == 0 && rho_conf_getBool("jqtouch_mode") )
-            continue;
-
-        if (!action) action = "";
-
-        LOG(INFO) + "addToolbarButton: Label: '"+label+"';Action: '"+action+"'";
-		if (strcasecmp(action, "separator")==0) {
-            ((QtMainWindow*)qtMainWindow)->toolbarAddSeparator();
-		} else {
-			String strImagePath;
-			if ( icon && *icon )
-				strImagePath = rho::common::CFilePath::join( RHODESAPP().getAppRootPath(), icon );
-			else {
-				if ( strcasecmp(action, "options")==0 )
-					strImagePath = "lib/res/options_btn.png";
-				else if ( strcasecmp(action, "home")==0 )
-					strImagePath = "lib/res/home_btn.png";
-				else if ( strcasecmp(action, "refresh")==0 )
-					strImagePath = "lib/res/refresh_btn.png";
-				else if ( strcasecmp(action, "back")==0 )
-					strImagePath = "lib/res/back_btn.png";
-				else if ( strcasecmp(action, "forward")==0 )
-					strImagePath = "lib/res/forward_btn.png";
-				strImagePath = strImagePath.length() > 0 ? CFilePath::join( RHODESAPP().getRhoRootPath(), strImagePath) : String();
+	int nSeparators = 0;
+	bool wasSeparator = false;
+	for (int ipass=0; ipass < 2; ++ipass) {
+		for (int i = 0; i < size; ++i) 
+		{
+			rho_param *hash = params->v.array->value[i];
+			if (hash->type != RHO_PARAM_HASH) {
+				LOG(ERROR) + "Unexpected type of array item for create_nativebar, should be Hash";
+				return;
 			}
+	        
+			const char *label = NULL;
+			const char *action = NULL;
+			const char *icon = NULL;
+			const char *colored_icon = NULL;
+			int  nItemWidth = 0;
 
-			((QtMainWindow*)qtMainWindow)->toolbarAddAction(QIcon(QString(strImagePath.c_str())), QString(label), action);
+			for (int j = 0, lim = hash->v.hash->size; j < lim; ++j) 
+			{
+				const char *name = hash->v.hash->name[j];
+				rho_param *value = hash->v.hash->value[j];
+				if (value->type != RHO_PARAM_STRING) {
+					LOG(ERROR) + "Unexpected '" + name + "' type, should be String";
+					return;
+				}
+	            
+				if (strcasecmp(name, "label") == 0)
+					label = value->v.string;
+				else if (strcasecmp(name, "action") == 0)
+					action = value->v.string;
+				else if (strcasecmp(name, "icon") == 0)
+					icon = value->v.string;
+				else if (strcasecmp(name, "colored_icon") == 0)
+					colored_icon = value->v.string;
+				else if (strcasecmp(name, "width") == 0)
+					nItemWidth = atoi(value->v.string);
+			}
+	        
+			if (label == NULL && bar_type == TOOLBAR_TYPE)
+				label = "";
+	        
+			if ( label == NULL || action == NULL) {
+				LOG(ERROR) + "Illegal argument for create_nativebar";
+				return;
+			}
+			if ( strcasecmp(action, "forward") == 0 && rho_conf_getBool("jqtouch_mode") )
+				continue;
+
+			if (!action) action = "";
+
+			if (ipass==0) {
+				if (strcasecmp(action, "separator")==0)
+					++nSeparators;
+			} else {
+				LOG(INFO) + "addToolbarButton: Label: '"+label+"';Action: '"+action+"'";
+				if (strcasecmp(action, "separator")==0) {
+					if (nSeparators!=1)
+					    ((QtMainWindow*)qtMainWindow)->toolbarAddSeparator();
+					else
+						wasSeparator = true;
+				} else {
+					String strImagePath;
+					if ( icon && *icon )
+						strImagePath = rho::common::CFilePath::join( RHODESAPP().getAppRootPath(), icon );
+					else {
+						if ( strcasecmp(action, "options")==0 )
+							strImagePath = "lib/res/options_btn.png";
+						else if ( strcasecmp(action, "home")==0 )
+							strImagePath = "lib/res/home_btn.png";
+						else if ( strcasecmp(action, "refresh")==0 )
+							strImagePath = "lib/res/refresh_btn.png";
+						else if ( strcasecmp(action, "back")==0 )
+							strImagePath = "lib/res/back_btn.png";
+						else if ( strcasecmp(action, "forward")==0 )
+							strImagePath = "lib/res/forward_btn.png";
+						strImagePath = strImagePath.length() > 0 ? CFilePath::join( RHODESAPP().getRhoRootPath(), strImagePath) : String();
+					}
+
+					((QtMainWindow*)qtMainWindow)->toolbarAddAction(QIcon(QString(strImagePath.c_str())), QString(label), action, wasSeparator);
+				}
+			}
 		}
 	}
     ((QtMainWindow*)qtMainWindow)->toolbarShow();
