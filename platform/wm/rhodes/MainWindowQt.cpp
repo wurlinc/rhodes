@@ -25,6 +25,7 @@ void CMainWindow::updateSizeProperties(int width, int height)
 {
 	m_screenWidth = width;
 	m_screenHeight = height;
+	LOGCONF().setLogView(&m_logView);
 }
 
 void CMainWindow::logEvent(const ::std::string& message)
