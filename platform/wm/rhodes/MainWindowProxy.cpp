@@ -59,19 +59,6 @@ void* CMainWindowProxy::init(IMainWindowCallback* callback, const wchar_t* title
 
 void CMainWindowProxy::messageLoop(void)
 {
-	/*
-	while (1) {
-		qApp->processEvents();
-        MSG msg;
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-            LOG(INFO) + "peeked message";
-            TranslateMessage(&msg);
-            LOG(INFO) + "translated message";
-            DispatchMessage(&msg);
-            LOG(INFO) + "dispatched message";
-        }
-	}
-	*/
 	qApp->exec();
 }
 

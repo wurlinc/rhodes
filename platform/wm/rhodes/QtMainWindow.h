@@ -5,6 +5,7 @@
 #include <QUrl>
 #include <QWebInspector>
 #include <QAction>
+#include "MainWindowDef.h"
 #include "MainWindowCallback.h"
 #include "common/IRhoThreadImpl.h"
 
