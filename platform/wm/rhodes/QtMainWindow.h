@@ -50,6 +50,7 @@ private slots:
     void on_webView_urlChanged(QUrl );
     void on_webView_loadFinished(bool);
     void on_webView_loadStarted();
+	void on_webView_linkClicked(const QUrl&);
     void on_actionBack_triggered();
 	void on_toolbarAction_triggered(bool);
 	void on_menuAction_triggered(bool);

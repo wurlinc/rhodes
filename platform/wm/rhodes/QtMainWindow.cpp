@@ -1,6 +1,7 @@
 #pragma warning(disable:4996)
 #include "QtMainWindow.h"
 #include "ui_QtMainWindow.h"
+#include "ExternalWebView.h"
 #include <QResizeEvent>
 #include "common/RhoStd.h"
 #include "common/RhodesApp.h"
@@ -15,6 +16,7 @@ QtMainWindow::QtMainWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 	this->ui->webView->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+	this->ui->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 	this->move(0,0);
 	this->ui->toolBar->hide();
 
@@ -64,6 +66,19 @@ void QtMainWindow::resizeEvent(QResizeEvent *event)
 void QtMainWindow::on_actionBack_triggered()
 {
 	ui->webView->back();
+}
+
+void QtMainWindow::on_webView_linkClicked(const QUrl& url)
+{
+	QString sUrl = url.toString();
+	if (sUrl.contains("rho_open_target=_blank")) {
+        if (cb) cb->logEvent("WebView: open external browser");
+		ExternalWebView* externalWebView = new ExternalWebView();
+		externalWebView->navigate(QUrl(sUrl.remove("rho_open_target=_blank")));
+		externalWebView->show();
+		externalWebView->activateWindow();
+	} else
+		ui->webView->setUrl(url);
 }
 
 void QtMainWindow::on_webView_loadStarted()
