@@ -8,6 +8,8 @@
 		<% if System::get_property('platform') == 'APPLE' %>
             <link href="/public/css/webkit.css" type="text/css" rel="stylesheet"/>
 			<link href="/public/css/iphone.css" type="text/css" rel="stylesheet"/>
+		<% elsif System::get_property('webview') =~ /^WEBKIT/ %>
+            <link href="/public/css/webkit.css" type="text/css" rel="stylesheet"/>
 		<% elsif System::get_property('platform') == 'Blackberry' %>
 			<link href="/public/css/blackberry.css" type="text/css" rel="stylesheet"/>	
 		<% elsif  System::get_property('platform') == 'ANDROID' %>
