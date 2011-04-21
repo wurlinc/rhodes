@@ -5,7 +5,9 @@
 #include "logging/RhoLog.h"
 #include "common/RhoConf.h"
 #include "common/RhodesApp.h"
+#include "Alert.h"
 #include "RhoNativeViewManagerWM.h"
+#include "SyncStatusDlg.h"
 #include "rho/rubyext/NativeToolbar.h"
 #if defined(OS_WINDOWS)
 #include "menubar.h"
@@ -60,6 +62,11 @@ public:
         COMMAND_ID_HANDLER(IDM_LOG,OnLogCommand)
         COMMAND_ID_HANDLER(IDM_REFRESH, OnRefreshCommand)
         COMMAND_ID_HANDLER(IDM_NAVIGATE, OnNavigateCommand)
+		MESSAGE_HANDLER(WM_TAKEPICTURE, OnTakePicture)
+		MESSAGE_HANDLER(WM_SELECTPICTURE, OnSelectPicture)
+        MESSAGE_HANDLER(WM_ALERT_SHOW_POPUP, OnAlertShowPopup)
+		MESSAGE_HANDLER(WM_ALERT_HIDE_POPUP, OnAlertHidePopup);
+		MESSAGE_HANDLER(WM_DATETIME_PICKER, OnDateTimePicker);
 		MESSAGE_HANDLER(WM_EXECUTE_COMMAND, OnExecuteCommand);
         MESSAGE_HANDLER(WM_EXECUTE_RUNNABLE, OnExecuteRunnable);
     END_MSG_MAP()
@@ -78,6 +85,11 @@ private:
     LRESULT OnRefreshCommand(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
     LRESULT OnNavigateCommand(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
+	LRESULT OnTakePicture(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
+	LRESULT OnSelectPicture(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
+    LRESULT OnAlertShowPopup (UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
+	LRESULT OnAlertHidePopup (UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
+	LRESULT OnDateTimePicker (UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
 	LRESULT OnExecuteCommand (UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
 	LRESULT OnExecuteRunnable (UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
 
@@ -96,6 +108,8 @@ public:
 
 private:
     rho::Vector<rho::common::CAppMenuItem> m_arAppMenuItems;
+	CAlertDialog *m_alertDialog;
+    CSyncStatusDlg m_SyncStatusDlg;
 };
 
 #if !defined(_WIN32_WCE)

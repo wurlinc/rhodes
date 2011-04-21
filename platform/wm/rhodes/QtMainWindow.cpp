@@ -124,6 +124,7 @@ void QtMainWindow::Refresh(void)
 void QtMainWindow::toolbarRemoveAllButtons()
 {
 	ui->toolBar->clear();
+	ui->toolBarRight->clear();
 }
 
 void QtMainWindow::toolbarShow()

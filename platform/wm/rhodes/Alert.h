@@ -3,13 +3,16 @@
 
 #include <common/RhoStd.h>
 #include <logging/RhoLog.h>
+#include "MainWindowDef.h"
 
 using namespace rho;
 using namespace rho::common;
 
+//#ifndef MAINWINDOW_QT
 #define ID_ALERT_DLG_BUTTON_MAX   (8)
 #define ID_ALERT_DLG_BUTTON_FIRST (1)
 #define ID_ALERT_DLG_BUTTON_LAST  (ID_ALERT_DLG_BUTTON_FIRST + (ID_ALERT_DLG_BUTTON_MAX) - 1)
+//#endif
 
 class CAlertDialog : public CIndirectDialogImpl<CAlertDialog, CMemDlgTemplate>
 {

@@ -4,10 +4,13 @@
 #include "MainWindowQt.h"
 #include "common/RhoStd.h"
 #include "common/StringConverter.h"
+#include "camera/Camera.h"
 #include "common/RhoFilePath.h"
 #include "AppManager.h"
 
 IMPLEMENT_LOGCLASS(CMainWindow,"MainWindow");
+
+#include "DateTimePicker.h"
 
 using namespace rho;
 using namespace rho::common;
@@ -205,6 +208,97 @@ LRESULT CMainWindow::OnNavigateCommand(WORD /*wNotifyCode*/, WORD /*wID*/, HWND 
     return 0;
 }
 
+LRESULT CMainWindow::OnTakePicture(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/) 
+{
+	TCHAR image_uri[MAX_PATH];
+    HRESULT status;
+    //TODO: show browse file dialog
+    wsprintf( image_uri, L"%s", L"dashboard.PNG");
+    status = S_OK;
+
+    RHODESAPP().callCameraCallback( (const char*)lParam, rho::common::convertToStringA(image_uri),
+        (status!= S_OK && status != S_FALSE ? "Error" : ""), status == S_FALSE);
+
+    free ((void *)lParam);
+	return 0;
+}
+
+LRESULT CMainWindow::OnSelectPicture(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/) 
+{
+	TCHAR image_uri[MAX_PATH];
+    HRESULT status = S_OK;
+	Camera camera;
+	status = camera.selectPicture(this->m_hWnd,image_uri);
+
+    RHODESAPP().callCameraCallback( (const char*)lParam, rho::common::convertToStringA(image_uri),
+        (status!= S_OK && status != S_FALSE ? "Error" : ""), status == S_FALSE);
+    
+    free ((void *)lParam);
+    
+	return 0;
+}
+
+LRESULT CMainWindow::OnAlertShowPopup (UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
+{
+	/* TODO */
+    StringW strAppName = RHODESAPP().getAppNameW();
+	CAlertDialog::Params *params = (CAlertDialog::Params *)lParam;
+
+   	if (params->m_dlgType == CAlertDialog::Params::DLG_STATUS) 
+    {
+        m_SyncStatusDlg.setStatusText(convertToStringW(params->m_message).c_str());
+        m_SyncStatusDlg.setTitle( convertToStringW(params->m_title).c_str() );
+        if ( !m_SyncStatusDlg.m_hWnd )
+            m_SyncStatusDlg.Create(m_hWnd, 0);
+        else
+        {
+            m_SyncStatusDlg.ShowWindow(SW_SHOW);
+            m_SyncStatusDlg.BringWindowToTop();
+        }
+    }else if (params->m_dlgType == CAlertDialog::Params::DLG_DEFAULT) {
+		MessageBox(convertToStringW(params->m_message).c_str(), strAppName.c_str(), MB_ICONWARNING | MB_OK);
+	} else if (params->m_dlgType == CAlertDialog::Params::DLG_CUSTOM) 
+    {
+        if ( params->m_buttons.size() == 1 && strcasecmp(params->m_buttons[0].m_strCaption.c_str(), "ok") == 0)
+            MessageBox(convertToStringW(params->m_message).c_str(), convertToStringW(params->m_title).c_str(), MB_ICONWARNING | MB_OK);
+        else if (params->m_buttons.size() == 2 && strcasecmp(params->m_buttons[0].m_strCaption.c_str(), "ok") == 0 &&
+            strcasecmp(params->m_buttons[1].m_strCaption.c_str(), "cancel") == 0)
+        {
+            int nRes = MessageBox(convertToStringW(params->m_message).c_str(), convertToStringW(params->m_title).c_str(), 
+                    MB_ICONWARNING | MB_OKCANCEL);
+            int nBtn = nRes == IDCANCEL ? 1 : 0;
+            RHODESAPP().callPopupCallback(params->m_callback, params->m_buttons[nBtn].m_strID, params->m_buttons[nBtn].m_strCaption);
+        }
+        else
+        {
+		    if (m_alertDialog == NULL) 
+            {
+			    m_alertDialog = new CAlertDialog(params);
+			    m_alertDialog->DoModal();
+			    delete m_alertDialog;
+			    m_alertDialog = NULL;
+		    } else {
+			    LOG(WARNING) + "Trying to show alert dialog while it exists.";
+		    }
+        }
+	}
+
+    delete params;
+	/*  */
+    return 0;
+}
+
+LRESULT CMainWindow::OnAlertHidePopup (UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
+{
+	/* TODO */
+	if (m_alertDialog != NULL) {
+		m_alertDialog->EndDialog(0);
+		m_alertDialog = NULL;
+	}
+	/*  */
+	return 0;
+}
+
 LRESULT CMainWindow::OnExecuteCommand(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL& /*bHandled*/) {
 	RhoNativeViewRunnable* command = (RhoNativeViewRunnable*)wParam;
 	if (command != NULL) {
@@ -212,3 +306,28 @@ LRESULT CMainWindow::OnExecuteCommand(UINT /*uMsg*/, WPARAM wParam, LPARAM lPara
 	}
 	return 0;
 }	
+
+LRESULT CMainWindow::OnDateTimePicker (UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
+{
+	CDateTimeMessage *msg = (CDateTimeMessage *)lParam;
+	int retCode	= -1;
+	time_t ret_time = 0;
+
+	if (msg->m_format == CDateTimeMessage::FORMAT_TIME) {
+		CTimePickerDialog timeDialog(msg);
+		retCode = timeDialog.DoModal(m_hWnd);
+		ret_time = timeDialog.GetTime();
+	} else {
+		CDateTimePickerDialog dateTimeDialog(msg);
+		retCode = dateTimeDialog.DoModal(m_hWnd);
+		ret_time = dateTimeDialog.GetTime();
+	}
+
+	rho_rhodesapp_callDateTimeCallback( msg->m_callback, 
+										retCode == IDOK ? (long )ret_time : 0,
+										msg->m_data,
+										retCode == IDOK ? 0 : 1);
+	delete msg;
+
+	return 0;
+}

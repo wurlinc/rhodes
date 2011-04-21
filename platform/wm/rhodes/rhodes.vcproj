@@ -1065,6 +1065,13 @@
 			<File
 				RelativePath=".\MainWindowQt.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\MainWindowWin32.cpp"
