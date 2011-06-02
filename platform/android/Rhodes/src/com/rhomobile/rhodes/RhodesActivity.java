@@ -474,6 +474,8 @@ public class RhodesActivity extends BaseActivity {
 
         Intent intent = getIntent();
         String startParams = (intent.getData() != null) ? intent.toUri(0) : "";
+        
+        
         Uri uri = Uri.parse(startParams);
         String scheme = uri.getScheme();
         if(startParams.compareTo("") != 0)
@@ -482,7 +484,9 @@ public class RhodesActivity extends BaseActivity {
             if(startParams.startsWith("//"))
                 startParams = startParams.substring(2);
         }
-
+        if (startParams.lastIndexOf("#") >= 0) {
+        	startParams = startParams.substring(0, startParams.lastIndexOf("#"));
+        }
         if(!RhodesApplication.canStart(startParams))
         {
             Logger.E(TAG, "This is hidden app and can be started only with security key.");
@@ -491,10 +495,12 @@ public class RhodesActivity extends BaseActivity {
         }
 
         String urlStart = uri.getPath();
-        if (urlStart.compareTo("") != 0)
-        {
-            Logger.D(TAG, "PROCESS URL START: " + urlStart);
-            RhoConf.setString("start_path", Uri.decode(urlStart));
+        if (urlStart != null) { 
+		    if ("".compareTo(urlStart) != 0)
+		    {
+		        Logger.D(TAG, "PROCESS URL START: " + urlStart);
+		        RhoConf.setString("start_path", Uri.decode(urlStart));
+		    }
         }
 
 		ENABLE_LOADING_INDICATION = !RhoConf.getBool("disable_loading_indication");
