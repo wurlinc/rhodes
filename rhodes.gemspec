@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email = %q{dev@rhomobile.com}
   s.extra_rdoc_files = ["README.md", "LICENSE"]
   files = Array.new
-  s.files = Dir["#{File.dirname(__FILE__)}/**/*.*"].to_a
+  s.files = Dir["#{File.dirname(__FILE__)}/**/*"].to_a
   s.homepage = %q{http://www.rhomobile.com}
   s.rdoc_options = ["--inline-source", "--charset=UTF-8"]
   s.require_paths = ["lib"]
