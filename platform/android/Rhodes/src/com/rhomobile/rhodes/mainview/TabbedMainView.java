@@ -371,7 +371,7 @@ public class TabbedMainView implements MainView {
      * @return True if we are on the rhoconfig.txt start page, false otherwise.
      */
     public boolean isOnStartPage() {
-        String currentLocation = currentLocation(activeTab());
+        String currentLocation = RhodesAppOptions.getCurrentUrl();
         if (currentLocation == null) {
             return false;
         }
