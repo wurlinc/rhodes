@@ -11,5 +11,7 @@ public interface RhodesActivityListener {
 	void onNewIntent(RhodesActivity activity, Intent intent);
 	
 	void onRhodesActivityStartup(RhodesActivity activity);
-	
+
+	void onActivityResult(int requestCode, int resultCode, Intent data);
+
 }
