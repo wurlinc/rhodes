@@ -560,6 +560,10 @@ public class RhodesActivity extends BaseActivity {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		RhoBluetoothManager.onActivityResult(requestCode, resultCode, data);
+		Iterator<RhodesActivityListener> iterator = mListeners.iterator();
+		while (iterator.hasNext()) {
+			iterator.next().onActivityResult(requestCode, resultCode, data);
+		}
 	}
 	
     /**
