@@ -201,7 +201,9 @@ public class Nfc implements RhodesActivityListener {
 		activity.addRhodesActivityListener(getInstance());
 	}
 	
-	
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	}
+
 	public void onPause(RhodesActivity activity) {
 		log(" $$$$$$$$$ onPause() ");
 		NfcAdapter nfcAdapter = getDefaultAdapter(RhodesActivity.getContext());
