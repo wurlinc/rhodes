@@ -648,6 +648,11 @@ public class TabbedMainView implements MainView {
 				view = new SimpleMainView();
 			}
 			// Set view factory
+			Iterator<RhodesActivityListener> iter = RhodesActivity.safeGetInstance().getRhodesActivityListeners().iterator();
+			while (iter.hasNext()) {
+				iter.next().onWebViewCreated(TabbedMainView.this, view.getWebView(i  ), i);
+			}
+
 			
 			if (web_bkg_color_Obj != null) {
 				if (!use_current_view_for_tab) {
@@ -862,10 +867,6 @@ public class TabbedMainView implements MainView {
 						wv.clearCache(true);
 						wv.invalidate();
 						wv.loadData("", "", "");
-						Iterator<RhodesActivityListener> iter = RhodesActivity.safeGetInstance().getRhodesActivityListeners().iterator();
-						while (iter.hasNext()) {
-							iter.next().onWebViewCreated(TabbedMainView.this, wv, i);
-						}
 					}
 				}
 				TabData selected_data = tabData.elementAt(tabIndex);
