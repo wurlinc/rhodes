@@ -3,12 +3,15 @@ package com.rhomobile.rhodes;
 import java.lang.reflect.Constructor;
 import java.lang.Thread;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import android.os.*;
 import com.rhomobile.rhodes.bluetooth.RhoBluetoothManager;
 import com.rhomobile.rhodes.mainview.MainView;
 import com.rhomobile.rhodes.mainview.SimpleMainView;
+import com.rhomobile.rhodes.mainview.TabbedMainView;
 import com.rhomobile.rhodes.util.PerformOnUiThread;
 import com.rhomobile.rhodes.webview.ChromeClientOld;
 import com.rhomobile.rhodes.webview.RhoWebSettings;
@@ -78,7 +81,11 @@ public class RhodesActivity extends BaseActivity {
 	public boolean isInsideStartStop() {
 		return mIsInsideStartStop;
 	}
-	
+
+    public List<RhodesActivityListener> getRhodesActivityListeners() {
+        return Collections.unmodifiableList(mListeners);
+    }
+
 	public void addRhodesActivityListener(RhodesActivityListener listener) {
 		if (!mListeners.contains(listener)) {
 			mListeners.add(listener);
@@ -374,7 +381,7 @@ public class RhodesActivity extends BaseActivity {
 				setContentView(v.getView());
 			}
 		};
-		
+
 		if (!USE_DELAYED_MAINVIEW_DISPLAY || v instanceof SplashScreen /*|| !waitUntilNavigationDone*/) {
 			// Make new MainView visible right now
             Log.d(TAG, "Making MainView Visible Immediately:" + v);
