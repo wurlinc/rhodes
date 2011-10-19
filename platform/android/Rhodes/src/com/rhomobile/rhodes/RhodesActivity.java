@@ -27,14 +27,17 @@
 package com.rhomobile.rhodes;
 
 import java.lang.reflect.Constructor;
+import java.lang.Thread;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
+import android.os.*;
 import com.rhomobile.rhodes.bluetooth.RhoBluetoothManager;
 import com.rhomobile.rhodes.camera.Camera;
 import com.rhomobile.rhodes.mainview.MainView;
 import com.rhomobile.rhodes.mainview.SplashScreen;
+import com.rhomobile.rhodes.mainview.SimpleMainView;
 import com.rhomobile.rhodes.util.PerformOnUiThread;
 import com.rhomobile.rhodes.util.Utils;
 import com.rhomobile.rhodes.webview.ChromeClientOld;
@@ -45,10 +48,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -59,13 +58,15 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import javax.xml.transform.Result;
+
 public class RhodesActivity extends BaseActivity {
 	
 	private static final String TAG = RhodesActivity.class.getSimpleName();
 	
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 	
-	private static final boolean USE_DELAYED_MAINVIEW_DISPLAY = false;
+	private static final boolean USE_DELAYED_MAINVIEW_DISPLAY = true;
 	
 	public static boolean ENABLE_LOADING_INDICATION = true;
 	
@@ -369,6 +370,12 @@ public class RhodesActivity extends BaseActivity {
 		if (DEBUG)
 			Log.d(TAG, "setMainView: v=" + v + "; mMainView=" + mMainView);
 		
+        if (RhoConf.getBool("main_view_is_tabbed_view") && v instanceof SimpleMainView) {
+            if (DEBUG)
+                Log.d(TAG, "Ignoring setMainView for because main_view_is_tabbed_view");
+            return;
+        }
+
 		// If there's no previous mMainView, don't wait
 		if (mMainView == null)
 			waitUntilNavigationDone = false;
@@ -385,29 +392,40 @@ public class RhodesActivity extends BaseActivity {
 			}
 		};
 		
-		if (!USE_DELAYED_MAINVIEW_DISPLAY /* || !waitUntilNavigationDone*/) {
+		if (!USE_DELAYED_MAINVIEW_DISPLAY || v instanceof SplashScreen /*|| !waitUntilNavigationDone*/) {
 			// Make new MainView visible right now
+            Log.d(TAG, "Making MainView Visible Immediately:" + v);
 			setMainViewVisible.run();
 		}
 		else {
+            int waitTime = RhoConf.getInt("splash_wait");
+            //
+            if (DEBUG)
+                Log.d(TAG, "Making MainView Visible via onPageFinished:" + v + "after "+waitTime+"ms wait..");
+            new WaitThenDoTask(v, setMainViewVisible).execute(waitTime);
+            WebView webView = null;
 			// If we're requested to wait until first navigation will be done,
 			// use the trick: keep current main view until first navigate will be
 			// finished in the new MainView.
 			// This will end up in good user experience - user will see
 			// new MainView only when it will have completely load its content
 			// (no blank screens for user).
-			WebView webView = v.getWebView(0);
-			webView.setWebViewClient(new WebViewClient() {
-				@Override
-				public void onPageFinished(WebView view, String url) {
-					mWebViewClient.onPageFinished(view, url);
-					// Restore standard WebViewClient to be sure this callback will not
-					// be called anymore (it should be called only once)
-					view.setWebViewClient(mWebViewClient);
-					
-					setMainViewVisible.run();
-				}
-			});
+//            webView = v.getWebView(0);
+//			webView.setWebViewClient(new WebViewClient() {
+//                public void onLoadResource(android.webkit.WebView view, java.lang.String url) {
+//                }
+//                public void onLoadResource() {
+//                }
+//				@Override
+//				public void onPageFinished(WebView view, String url) {
+//                    Log.d(TAG, "Got onPageFinished for:" + view+" url "+url);
+//					mWebViewClient.onPageFinished(view, url);
+//					// Restore standard WebViewClient to be sure this callback will not
+//					// be called anymore (it should be called only once)
+//					view.setWebViewClient(mWebViewClient);
+//					setMainViewVisible.run();
+//				}
+//			});
 		}
 	}
 	
@@ -544,4 +562,34 @@ public class RhodesActivity extends BaseActivity {
 		RhoBluetoothManager.onActivityResult(requestCode, resultCode, data);
 	}
 	
+    /**
+     * This class waits for a time, then
+     */
+    class WaitThenDoTask extends AsyncTask<Integer, Void, Void> {
+
+        MainView targetView;
+        Runnable whatToDo;
+
+        public WaitThenDoTask(MainView targetView, Runnable whatToDo) {
+            this.targetView = targetView;
+            this.whatToDo   = whatToDo;
+        }
+
+        protected Void doInBackground(Integer... milliseconds) {
+            Log.d(TAG, "Sleeping for "+milliseconds[0]+"ms with splash screen on..");
+            if (milliseconds[0] > 0) {
+                try { Thread.currentThread().sleep(milliseconds[0]); } catch (InterruptedException exc) {}
+            }
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(Void result) {
+            Log.d(TAG, "Done sleeping. Doing stuff on UI Thread..");
+            whatToDo.run();
+//            RhodesActivity.this.setContentView(targetView);
+        }
+    }
+
 }
