@@ -68,7 +68,7 @@ public class SimpleMainView implements MainView {
 			goBack();//back(0);
 		}
 	};
-	
+
 	public class MyView extends LinearLayout {
 		public MyView(Context ctx) {
 			super(ctx);
@@ -98,10 +98,10 @@ public class SimpleMainView implements MainView {
 	
 	private class ActionHome implements View.OnClickListener {
 		public void onClick(View v) {
-			navigate(RhodesAppOptions.getStartUrl(), 0);
+			navigate(RhodesService.getInstance().getMainView().currentStartUrl(), 0);
 		}
 	};
-	
+
 	private class ActionOptions implements View.OnClickListener {
 		public void onClick(View v) {
 			navigate(RhodesAppOptions.getOptionsUrl(), 0);
@@ -154,6 +154,23 @@ public class SimpleMainView implements MainView {
 	public WebView getWebView(int tab_index) {
 		return webView;
 	}
+
+    /**
+     * Returns the start URL when there is only one view.
+     * @return The start url from rhoconfig.txt
+     */
+    @Override
+    public String currentStartUrl() {
+        return RhodesAppOptions.getStartUrl();
+    }
+
+    /**
+     *  Returns true if we are on the rhoconfig.txt start page (when there is only one view).
+     * @return True if we are on the rhoconfig.txt start page, false otherwise.
+     */
+    public boolean isOnStartPage() {
+        return RhodesService.isOnStartPage();
+    }
 
 	public void setNativeView(RhoNativeViewManager.RhoNativeView nview) {
 		restoreWebView();
@@ -553,22 +570,27 @@ public class SimpleMainView implements MainView {
 		view.setBackgroundColor(color);
 		webView.setBackgroundColor(color);
 	}
-	
+
 	public void back(int index) {
 		restoreWebView();
         
-        boolean bStartPage = RhodesService.isOnStartPage();
+        boolean bStartPage = RhodesService.getInstance().getMainView().isOnStartPage();
+        Utils.platformLog(TAG, "** WURL goBack: Are we on start Page? "+bStartPage);
 
-        if ( !bStartPage && webView.canGoBack() )		
+        if ( !bStartPage && webView.canGoBack() ) {
+            Utils.platformLog(TAG, "** WURL goBack: We are not on start page and we can go back. Going back then.");
             webView.goBack();
+            Utils.platformLog(TAG, "** WURL goBack: Done going back. URL: "+webView.getUrl());
+        }
         else
-        {    
+        {
+            Utils.platformLog(TAG, "** WURL goBack: We can no longer go back. ");
 	        RhodesActivity ra = RhodesActivity.getInstance();
 	        if ( ra != null )
 	            ra.moveTaskToBack(true);
-        }		
+        }
 	}
-	
+
 	public void goBack() 
 	{
 		RhodesService.navigateBack();
