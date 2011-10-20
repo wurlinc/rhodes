@@ -356,7 +356,9 @@ public class Nfc implements RhodesActivityListener {
 		}
 	}
 	
-	
+	public void onWebViewCreated(MainView mainView, WebView webView, int tabIndex) {
+			// NO-Op
+	}
 	
 	
 	public static void setCallback(String callback) {

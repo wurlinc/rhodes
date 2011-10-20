@@ -26,14 +26,12 @@
 
 package com.rhomobile.rhodes.mainview;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
 import android.net.Uri;
-import com.rhomobile.rhodes.Logger;
-import com.rhomobile.rhodes.RhodesActivity;
-import com.rhomobile.rhodes.RhodesAppOptions;
-import com.rhomobile.rhodes.RhodesService;
+import com.rhomobile.rhodes.*;
 import com.rhomobile.rhodes.file.RhoFileApi;
 
 import android.content.Context;
@@ -864,6 +862,10 @@ public class TabbedMainView implements MainView {
 						wv.clearCache(true);
 						wv.invalidate();
 						wv.loadData("", "", "");
+						Iterator<RhodesActivityListener> iter = RhodesActivity.safeGetInstance().getRhodesActivityListeners().iterator();
+						while (iter.hasNext()) {
+							iter.next().onWebViewCreated(TabbedMainView.this, wv, i);
+						}
 					}
 				}
 				TabData selected_data = tabData.elementAt(tabIndex);
