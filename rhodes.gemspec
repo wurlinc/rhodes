@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 require "lib/rhodes.rb"
 
+`cp Rakefile rakefile.rb`
+
 Gem::Specification.new do |s|
   s.name = %q{rhodes}
   s.version = File.read('version').chomp
@@ -12,8 +14,11 @@ Gem::Specification.new do |s|
   s.email = %q{dev@rhomobile.com}
   s.extra_rdoc_files = ["README.md", "LICENSE"]
   files = Array.new
-  IO.read("Manifest.txt").each_line {|x| files << x.chomp}
-  s.files =  files
+  # Exclusion stuff and other code from Rakefile's :gem task. So you can install through github
+  s.files = Dir["#{File.dirname(__FILE__)}/**/*"].to_a.select{|fname|
+	  # TODO: create exclusion list
+		File.file? fname and not fname =~ /rhosync-client/
+	}
   s.homepage = %q{http://www.rhomobile.com}
   s.rdoc_options = ["--inline-source", "--charset=UTF-8"]
   s.require_paths = ["lib"]

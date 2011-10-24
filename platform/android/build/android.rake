@@ -1233,6 +1233,10 @@ namespace "build" do
               src_application.elements.each do |e|
                   puts '$$$ process element with attr = '+e.attribute('name','android').to_s
                   if e.attribute('name','android').to_s == 'com.rhomobile.rhodes.RhodesActivity'
+                    e.attributes.each do |k,v|
+                      puts '         add attribute to MainActivity['+k+']: '+v
+                      dst_main_activity.attributes[k] = v
+                    end
                     e.elements.each do |sube|
                       puts '         add item to MainActivity['+sube.xpath+']'
                       dst_main_activity.add sube

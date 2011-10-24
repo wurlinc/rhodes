@@ -49,6 +49,8 @@ public interface MainView {
 	public void reload(int index);
 	
 	public String currentLocation(int index);
+    public String currentStartUrl();
+    public boolean isOnStartPage();
 	
 	public void switchTab(int index);
 	public int activeTab();
@@ -58,4 +60,5 @@ public interface MainView {
 	
 	public void addNavBar(String title, Map<Object,Object> left, Map<Object,Object> right);
 	public void removeNavBar();
+
 }

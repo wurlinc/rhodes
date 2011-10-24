@@ -201,7 +201,9 @@ public class Nfc implements RhodesActivityListener {
 		activity.addRhodesActivityListener(getInstance());
 	}
 	
-	
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	}
+
 	public void onPause(RhodesActivity activity) {
 		log(" $$$$$$$$$ onPause() ");
 		NfcAdapter nfcAdapter = getDefaultAdapter(RhodesActivity.getContext());
@@ -354,7 +356,9 @@ public class Nfc implements RhodesActivityListener {
 		}
 	}
 	
-	
+	public void onWebViewCreated(MainView mainView, WebView webView, int tabIndex) {
+			// NO-Op
+	}
 	
 	
 	public static void setCallback(String callback) {

@@ -26,12 +26,12 @@
 
 package com.rhomobile.rhodes.mainview;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
-import com.rhomobile.rhodes.Logger;
-import com.rhomobile.rhodes.RhodesActivity;
-import com.rhomobile.rhodes.RhodesService;
+import android.net.Uri;
+import com.rhomobile.rhodes.*;
 import com.rhomobile.rhodes.file.RhoFileApi;
 
 import android.content.Context;
@@ -331,7 +331,7 @@ public class TabbedMainView implements MainView {
 		private boolean first_tab;
 	}
 	
-	
+
 	private static class TabViewFactory implements TabHost.TabContentFactory {
 		
 		private TabData data;
@@ -352,7 +352,37 @@ public class TabbedMainView implements MainView {
 		TabData data = tabData.elementAt(index);
 		return data.view;
 	}
-	
+
+    /**
+     * Returns the start URL for the current tab. On a TabbedMainView, the start URL
+     * is as it was defined in its tabData.
+     * @return The start URL for the currently selected tab.
+     */
+    @Override
+    public String currentStartUrl() {
+        TabData data = tabData.elementAt(activeTab());
+        return data.url;
+    }
+
+    /**
+     *  Returns true if we are on the rhoconfig.txt start page (when there is only one view).
+     * @return True if we are on the rhoconfig.txt start page, false otherwise.
+     */
+    public boolean isOnStartPage() {
+        String currentLocation = RhodesAppOptions.getCurrentUrl();
+        if (currentLocation == null) {
+            return false;
+        }
+        try {
+            Uri uri = Uri.parse(currentLocation);
+            currentLocation = uri.getPath();
+        }catch (Exception exc) {
+            android.util.Log.e(TAG, "** Current location not parsable! "+currentLocation);
+        }
+        android.util.Log.d(TAG, "** WURL - Start Page? Current URL is "+currentLocation+", start URL is "+currentStartUrl());
+        return currentLocation.equals(currentStartUrl());
+    }
+
 	private void processTabHostColors(TabHost tabHost, int SelectedColor, boolean useSelectedColor) {
 		
 		for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) { 
@@ -618,6 +648,11 @@ public class TabbedMainView implements MainView {
 				view = new SimpleMainView();
 			}
 			// Set view factory
+			Iterator<RhodesActivityListener> iter = RhodesActivity.safeGetInstance().getRhodesActivityListeners().iterator();
+			while (iter.hasNext()) {
+				iter.next().onWebViewCreated(TabbedMainView.this, view.getWebView(i  ), i);
+			}
+
 			
 			if (web_bkg_color_Obj != null) {
 				if (!use_current_view_for_tab) {
@@ -878,7 +913,7 @@ public class TabbedMainView implements MainView {
 	}
 	
 	public String currentLocation(int index) {
-		return getView(index).currentLocation(0);
+		return getView(index) == null ? null : getView(index).currentLocation(0);
 	}
 
 	public void switchTab(int index) {

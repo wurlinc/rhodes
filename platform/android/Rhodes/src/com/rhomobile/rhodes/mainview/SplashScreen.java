@@ -143,10 +143,13 @@ public class SplashScreen implements MainView {
 	
 	@Override
 	public WebView getWebView(int index) {
-		if (mWebView == null) {
-			RhodesActivity ra = RhodesActivity.getInstance();
-			mWebView = ra.createWebView();
-		}
+		// WURL: This makes no sense to us. WebView can be created above with the Html, but
+		// we are reentering the createWebView without making tabs or anything (for the people
+		// who want to use tabs). Commenting it out since it crashes when enabling the USE_DELAYED_MAINVIEW_DISPLAY on RhodesActivity
+		//if (mWebView == null) {
+		//	RhodesActivity ra = RhodesActivity.getInstance();
+		//	mWebView = ra.createWebView();
+		//}
 		return mWebView;
 	}
 	
@@ -223,6 +226,14 @@ public class SplashScreen implements MainView {
 	public String currentLocation(int index) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public String currentStartUrl() {
+		return null;
+	}
+	@Override
+	public boolean isOnStartPage() {
+		return false;
 	}
 	@Override
 	public void switchTab(int index) {
