@@ -224,7 +224,9 @@ def set_app_name_android(newname)
           end
           if default_filter and browsable_filter
             filter.elements.each("data") do |d|
-              filter.delete d
+              # Alex - not deleting other data elements.  Not sure why they 
+              # do that, but it keeps us from adding our own url handlers
+              #filter.delete d
             end
             uri_params = {"android:scheme" => $uri_scheme, "android:host" => $uri_host}
             uri_params["android:pathPrefix"] = $uri_path_prefix unless $uri_path_prefix.nil?
