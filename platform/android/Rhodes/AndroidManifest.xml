@@ -6,12 +6,17 @@
     android:versionName="3.2.0">
     
     <uses-sdk android:minSdkVersion="8" />
-    
+
+    <supports-screens android:smallScreens="true" android:normalScreens= "true"
+                      android:largeScreens="true" android:xlargeScreens="false"
+                      android:anyDensity="true" />
+
     <application
         android:name="com.rhomobile.rhodes.RhodesApplication"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:debuggable="true">
+        >
+        <!-- android:debuggable="true" -->
         
         <!-- Main activity -->
         <activity
@@ -29,6 +34,23 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="http" android:host="rhomobile.com" android:pathPrefix="/com.rhomobile.rhodes"/>
+                <data android:scheme="http"  android:host="wurl.com" android:path="/install" /> 
+                <data android:scheme="https"  android:host="wurl.com" android:path="/install" /> 
+
+                <data android:scheme="http"  android:host="wurl.com" android:path="/s" /> 
+                <data android:scheme="https" android:host="wurl.com" android:path="/s" /> 
+                <data android:scheme="http"  android:host="wrl.it"   android:path="/s" /> 
+                <data android:scheme="https" android:host="wrl.it"   android:path="/s" /> 
+                <data android:scheme="http"  android:host="wrl.it"   android:path="/y" /> 
+                <data android:scheme="https" android:host="wrl.it"   android:path="/y" /> 
+                <data android:scheme="http"  android:host="q.wrl.it"   android:path="/s" /> 
+                <data android:scheme="https" android:host="q.wrl.it"   android:path="/s" />
+                <data android:scheme="http"  android:host="q.wrl.it"   android:path="/y" /> 
+                <data android:scheme="https" android:host="q.wrl.it"   android:path="/y" />
+                <data android:scheme="http"  android:host="ubuntu.local"   android:path="/s" /> 
+                <data android:scheme="https" android:host="ubuntu.local"   android:path="/s" /> 
+                <data android:scheme="http"  android:host="ubuntu.local"   android:path="/y" /> 
+                <data android:scheme="https" android:host="ubuntu.local"   android:path="/y" /> 
             </intent-filter>
         </activity>
         

@@ -501,11 +501,13 @@ public class RhodesActivity extends BaseActivity {
         StringBuilder startParams = new StringBuilder();
         boolean firstParam = true;
         if (intent.getData() != null) {
-	    	String strUri = intent.toUri(0);
-	        
+          String strUri = intent.toUri(0);
+          strUri = com.wurl.video.WurlVideo.reRouteStartParams(strUri);
+
 	        if(strUri.length() > 0)
 	        {
 	            Uri uri = Uri.parse(strUri);
+              Logger.D(TAG, "startParams: " + strUri);
 	            String authority = uri.getAuthority();
 	            String path = uri.getPath();
 	            String query = uri.getQuery();
