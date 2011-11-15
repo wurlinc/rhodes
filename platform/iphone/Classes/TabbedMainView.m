@@ -322,7 +322,7 @@
 	[SimpleMainView disableHiddenOnStart];
     CGRect frame = [[v view] frame];
     
-	NSString *background_color = nil;
+	NSString *background_color = @"0x000000";
 	
 	NSDictionary* global_properties = (NSDictionary*)[bar_info objectForKey:NATIVE_BAR_PROPERTIES];
 	if (global_properties != nil) {
@@ -589,6 +589,7 @@
 			rho_rhodesapp_load_url(s);
 			td.loaded = YES;
 		}
+        [[self subView:tabindex] view].backgroundColor = [UIColor blackColor];
 		[[[self subView:tabindex] view] setNeedsDisplay];
 	}
 }

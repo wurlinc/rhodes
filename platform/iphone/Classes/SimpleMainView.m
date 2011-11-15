@@ -625,20 +625,22 @@ static BOOL makeHiddenUntilLoadContent = YES;
 }
 
 -(void)setWebBackgroundColor:(int)bkg_color {
-	self.isBackgroundSetted = NO;
+	self.isBackgroundSetted = YES;
 	int cR = (bkg_color & 0xFF0000) >> 16;
 	int cG = (bkg_color & 0xFF00) >> 8;
 	int cB = (bkg_color & 0xFF);
 	UIColor* bc = [UIColor colorWithRed:( ((float)(cR)) / 255.0) green:(((float)(cG)) / 255.0) blue:(((float)(cB)) / 255.0) alpha:1.0];
 	
-	self.webView.backgroundColor = bc;
 	self.view.backgroundColor = bc;
+	self.webView.backgroundColor = [UIColor clearColor];
+    self.view.opaque = NO;
 	
-	NSString* data = [NSString stringWithFormat:@"<body bgcolor=\"#%6$X\"></body>", bkg_color]; 
-	
-	self.webView.hidden = YES;
-	
-	[self loadHTMLString:data];
+//	NSString* data = [NSString stringWithFormat:@"<body bgcolor=\"#%6$X\"></body>", bkg_color]; 
+//	
+//    self.view.opaque = YES;
+//	self.webView.hidden = YES;
+//	
+//	[self loadHTMLString:data];
 }
 
 
@@ -991,9 +993,14 @@ static BOOL makeHiddenUntilLoadContent = YES;
 - (void)webViewDidStartLoad:(UIWebView *)webview {
     // TODO
     //[self active];
+    self.webView.backgroundColor = [UIColor clearColor];
+    self.webView.opaque = NO;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webview {
+    self.webView.backgroundColor = [UIColor blackColor];
+    self.webView.opaque = YES;
+    
     // Disable default context menu on touch
     [webview stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitTouchCallout = \"none\";"];
     
@@ -1055,6 +1062,8 @@ static BOOL makeHiddenUntilLoadContent = YES;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    self.webView.backgroundColor = [UIColor clearColor];
+    self.webView.opaque = NO;
     // TODO
 	if (self.view.hidden) {
 		[[Rhodes sharedInstance] hideSplash];
