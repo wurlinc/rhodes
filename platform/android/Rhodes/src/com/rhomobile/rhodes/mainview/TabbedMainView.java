@@ -86,6 +86,7 @@ public class TabbedMainView implements MainView {
 	private static class TabData {
 		public MainView view;
 		public String url;
+		public String currentUrl;
 		public boolean reload;
 		public boolean loaded;
 		
@@ -360,16 +361,50 @@ public class TabbedMainView implements MainView {
      */
     @Override
     public String currentStartUrl() {
-        TabData data = tabData.elementAt(activeTab());
+        int activeTab = activeTab();
+        TabData data = tabData.elementAt(activeTab);
+        android.util.Log.d(TAG, "** WURL - Checking for start URL on tab "+activeTab+": "+data.url);
         return data.url;
     }
 
     /**
-     *  Returns true if we are on the rhoconfig.txt start page (when there is only one view).
+     * When handling multiple tabs, we need to know the last visited URL and the start URL for each specific
+     * tab. If you call this function from the outside on each hash change, this information can be maintained
+     * per-tab. Then the back button will check to see if the current URL is still the same and exit if the URL
+     * is the very first one.
+     *
+     * @param tabIndex The tab to set. -1 means the active tab.
+     * @param url The URL to set.
+     */
+    public void setLastVisitedUrl(int tabIndex, String url) {
+        if (tabIndex == -1) {
+            tabIndex = activeTab();
+        }
+        TabData data = tabData.elementAt(tabIndex);
+        android.util.Log.d(TAG, "** WURL - Setting last visited URL on tab "+tabIndex+" to "+url);
+        if (data == null) {
+            android.util.Log.e(TAG, "** WURL - No Tab for "+tabIndex);
+            return;
+        }
+        data.currentUrl = url;
+    }
+
+    public String getCurrentLocation(int tabIndex) {
+        // String result = RhodesAppOptions.getCurrentUrl(); No longer using this, at least here. Breaks with Ajax navigation down at C level so maintaining our own here.
+        TabData data = tabData.elementAt(tabIndex);
+        if (data == null) {
+            return null;
+        }
+        return data.currentUrl;
+    }
+
+
+    /**
+     *  Returns true if we are on the start page for the current view.
      * @return True if we are on the rhoconfig.txt start page, false otherwise.
      */
     public boolean isOnStartPage() {
-        String currentLocation = RhodesAppOptions.getCurrentUrl();
+        String currentLocation = getCurrentLocation(activeTab());
         if (currentLocation == null) {
             return false;
         }
@@ -664,6 +699,7 @@ public class TabbedMainView implements MainView {
 			TabData data = new TabData();
 			data.view = view;
 			data.url = action;
+			data.currentUrl = action;
 			data.reload = reload;
 			
 			if (use_current_view_for_tab) {
