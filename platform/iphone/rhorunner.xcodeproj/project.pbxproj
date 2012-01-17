@@ -8,6 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		05377D120E74D7D7003B8BD1 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05377D110E74D7D7003B8BD1 /* CoreFoundation.framework */; };
+		1355D13B14C0B60900BBF34A /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1355D13A14C0B60900BBF34A /* Parse.framework */; };
+		1355D16E14C0BEF200BBF34A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1355D16D14C0BEF200BBF34A /* AudioToolbox.framework */; };
+		1355D17014C0BF0C00BBF34A /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1355D16F14C0BF0C00BBF34A /* CFNetwork.framework */; };
+		1355D17214C0BF1B00BBF34A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1355D17114C0BF1B00BBF34A /* SystemConfiguration.framework */; };
+		1355D17414C0BF2400BBF34A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1355D17314C0BF2400BBF34A /* MobileCoreServices.framework */; };
+		1355D17614C0BF2D00BBF34A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1355D17514C0BF2D00BBF34A /* CoreGraphics.framework */; };
+		1355D17814C0BF3800BBF34A /* libz.1.1.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1355D17714C0BF3700BBF34A /* libz.1.1.3.dylib */; };
+		1355D17A14C0BF4000BBF34A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1355D17914C0BF4000BBF34A /* Security.framework */; };
+		1355D17C14C0BF4900BBF34A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1355D17B14C0BF4900BBF34A /* QuartzCore.framework */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
@@ -171,6 +180,15 @@
 
 /* Begin PBXFileReference section */
 		05377D110E74D7D7003B8BD1 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
+		1355D13A14C0B60900BBF34A /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		1355D16D14C0BEF200BBF34A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
+		1355D16F14C0BF0C00BBF34A /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
+		1355D17114C0BF1B00BBF34A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		1355D17314C0BF2400BBF34A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/MobileCoreServices.framework; sourceTree = DEVELOPER_DIR; };
+		1355D17514C0BF2D00BBF34A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		1355D17714C0BF3700BBF34A /* libz.1.1.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.1.3.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/usr/lib/libz.1.1.3.dylib; sourceTree = DEVELOPER_DIR; };
+		1355D17914C0BF4000BBF34A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		1355D17B14C0BF4900BBF34A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* rhorunner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rhorunner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -310,6 +328,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1355D17C14C0BF4900BBF34A /* QuartzCore.framework in Frameworks */,
+				1355D17A14C0BF4000BBF34A /* Security.framework in Frameworks */,
+				1355D17814C0BF3800BBF34A /* libz.1.1.3.dylib in Frameworks */,
+				1355D17614C0BF2D00BBF34A /* CoreGraphics.framework in Frameworks */,
+				1355D17414C0BF2400BBF34A /* MobileCoreServices.framework in Frameworks */,
+				1355D17214C0BF1B00BBF34A /* SystemConfiguration.framework in Frameworks */,
+				1355D17014C0BF0C00BBF34A /* CFNetwork.framework in Frameworks */,
+				1355D16E14C0BEF200BBF34A /* AudioToolbox.framework in Frameworks */,
 				63C7AE4A1472D55300ACF16F /* MediaPlayer.framework in Frameworks */,
 				FA3C79E2136ED8BB002302E5 /* CoreMedia.framework in Frameworks */,
 				FA3C79AE136ED523002302E5 /* CoreVideo.framework in Frameworks */,
@@ -336,6 +362,7 @@
 				5C59AB4212DDA22E00ED4A1E /* Security.framework in Frameworks */,
 				FA522FE112E49D6F00AB55CC /* QuartzCore.framework in Frameworks */,
 				FA52309412E55CA700AB55CC /* EventKit.framework in Frameworks */,
+				1355D13B14C0B60900BBF34A /* Parse.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +418,14 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				1355D17B14C0BF4900BBF34A /* QuartzCore.framework */,
+				1355D17914C0BF4000BBF34A /* Security.framework */,
+				1355D17714C0BF3700BBF34A /* libz.1.1.3.dylib */,
+				1355D17514C0BF2D00BBF34A /* CoreGraphics.framework */,
+				1355D17314C0BF2400BBF34A /* MobileCoreServices.framework */,
+				1355D17114C0BF1B00BBF34A /* SystemConfiguration.framework */,
+				1355D16F14C0BF0C00BBF34A /* CFNetwork.framework */,
+				1355D16D14C0BEF200BBF34A /* AudioToolbox.framework */,
 				63C7AE491472D55300ACF16F /* MediaPlayer.framework */,
 				FA3C79E1136ED8BB002302E5 /* CoreMedia.framework */,
 				FA3C79AD136ED523002302E5 /* CoreVideo.framework */,
@@ -431,6 +466,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1355D13A14C0B60900BBF34A /* Parse.framework */,
 				BDA4BA9F109A347400467AB9 /* libz.dylib */,
 				46B007061033776600D0C2F4 /* CoreGraphics.framework */,
 				F516695F0FFD78770079F023 /* AVFoundation.framework */,
@@ -1045,9 +1081,13 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sean Doherty";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sean Doherty";
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1064,8 +1104,8 @@
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = rhorunner;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "2B84953D-741F-4784-828E-BDED902A36A2";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2B84953D-741F-4784-828E-BDED902A36A2";
 				SDKROOT = iphoneos;
 				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = dynamic;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1077,11 +1117,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sean Doherty";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sean Doherty";
 				COPY_PHASE_STRIP = YES;
 				EXTENSIONS_LDFLAGS = "-filelist $(TARGET_TEMP_DIR)/rhodeslibs.txt";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = rhorunner_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
@@ -1096,8 +1140,8 @@
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = rhorunner;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "2B84953D-741F-4784-828E-BDED902A36A2";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2B84953D-741F-4784-828E-BDED902A36A2";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "../shared/ruby/iphone ../shared/ruby/include ../shared/curl/include ../shared/ ../shared/syncengine ../shared/logging ../shared/common rhoextlib";
@@ -1108,8 +1152,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
+				CODE_SIGN_ENTITLEMENTS = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sean Doherty";
 				EXTENSIONS_LDFLAGS = "-filelist $(TARGET_TEMP_DIR)/rhodeslibs.txt";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1140,7 +1184,7 @@
 					"$(EXTENSIONS_LDFLAGS)",
 				);
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2B84953D-741F-4784-828E-BDED902A36A2";
 				SDKROOT = iphoneos3.2;
 				USER_HEADER_SEARCH_PATHS = "../shared/ ../shared/syncengine ../shared/logging ../shared/common rhoextlib";
 			};
@@ -1150,11 +1194,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sean Doherty";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sean Doherty";
 				COPY_PHASE_STRIP = YES;
 				EXTENSIONS_LDFLAGS = "-filelist $(TARGET_TEMP_DIR)/rhodeslibs.txt";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = rhorunner_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
@@ -1180,8 +1228,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "Don't Code Sign";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sean Doherty";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sean Doherty";
 				EXTENSIONS_LDFLAGS = "-filelist $(TARGET_TEMP_DIR)/rhodeslibs.txt";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -1215,8 +1263,8 @@
 					"$(EXTENSIONS_LDFLAGS)",
 				);
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "2B84953D-741F-4784-828E-BDED902A36A2";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2B84953D-741F-4784-828E-BDED902A36A2";
 				SDKROOT = iphonesimulator3.2;
 				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = dynamic;
 				SYMROOT = build;
@@ -1228,7 +1276,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sean Doherty";
 				EXTENSIONS_LDFLAGS = "-filelist $(TARGET_TEMP_DIR)/rhodeslibs.txt";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1259,7 +1307,7 @@
 					"$(EXTENSIONS_LDFLAGS)",
 				);
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2B84953D-741F-4784-828E-BDED902A36A2";
 				SDKROOT = iphoneos3.2;
 				USER_HEADER_SEARCH_PATHS = "../shared/ ../shared/syncengine ../shared/logging ../shared/common rhoextlib";
 			};
