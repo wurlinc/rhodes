@@ -28,6 +28,8 @@
 #import "SimpleMainView.h"
 #import "RhoAlert.h"
 #import "ParamsWrapper.h"
+#import "Parse/Parse.h"
+
 
 #include "sync/ClientRegister.h"
 #include "sync/SyncThread.h"
@@ -827,6 +829,10 @@ static Rhodes *instance = NULL;
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
 	NSLog(@"Device token is %@", deviceToken);
+
+  /* Wurl Parse.com push notifcation integration - Tell Parse about the device token. */
+  [PFPush storeDeviceToken:deviceToken];
+  /* Wurl Parse.com push notification integration - end */
 	
 	NSMutableString *stringBuffer = [NSMutableString stringWithCapacity:([deviceToken length] * 2)];
 	const unsigned char *dataBuffer = [deviceToken bytes];
