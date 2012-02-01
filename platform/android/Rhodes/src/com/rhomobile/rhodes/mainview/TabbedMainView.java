@@ -705,6 +705,9 @@ public class TabbedMainView implements MainView {
 				return;
 			}
 			boolean real_change = (tabIndex != new_tabIndex);
+			if (RhoConf.getBool("call_tab_change_on_same_tab"))
+			  real_change = true;
+
 			if (real_change && byself) {
 				tabHost.setCurrentTab(new_tabIndex);
 				// all will processed when onTabChanged received

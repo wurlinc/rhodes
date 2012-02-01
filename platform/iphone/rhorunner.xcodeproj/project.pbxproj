@@ -26,6 +26,7 @@
 		5C53337B0FC1B20000F268F0 /* NetRequestImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5333790FC1B20000F268F0 /* NetRequestImpl.m */; };
 		5C59AB2912DDA1B800ED4A1E /* RhoCryptImpl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C59AB2812DDA1B800ED4A1E /* RhoCryptImpl.mm */; };
 		5C59AB4212DDA22E00ED4A1E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C59AB4112DDA22E00ED4A1E /* Security.framework */; };
+		636E828D14D9DD1E002F9B6D /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 636E828C14D9DD1E002F9B6D /* Twitter.framework */; };
 		BD38E6DC115CFF14001CE05C /* WebView.m in Sources */ = {isa = PBXBuildFile; fileRef = BD38E6DB115CFF14001CE05C /* WebView.m */; };
 		BD38E755115D1AAC001CE05C /* TabbedMainView.m in Sources */ = {isa = PBXBuildFile; fileRef = BD38E754115D1AAC001CE05C /* TabbedMainView.m */; };
 		BD486F59124FB66600F8A93F /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = BD486F58124FB66600F8A93F /* Event.m */; };
@@ -197,6 +198,7 @@
 		5C59AB2812DDA1B800ED4A1E /* RhoCryptImpl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RhoCryptImpl.mm; path = ../shared/common/iphone/RhoCryptImpl.mm; sourceTree = SOURCE_ROOT; };
 		5C59AB4112DDA22E00ED4A1E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		5C7162920F8B7EEC0096B6AA /* RhoLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RhoLib.xcodeproj; path = RhoLib/RhoLib.xcodeproj; sourceTree = "<group>"; };
+		636E828C14D9DD1E002F9B6D /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/Twitter.framework; sourceTree = DEVELOPER_DIR; };
 		BD2C94A610AE052A008D4692 /* curl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = curl.xcodeproj; path = curl/curl.xcodeproj; sourceTree = SOURCE_ROOT; };
 		BD38E6DB115CFF14001CE05C /* WebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebView.m; sourceTree = "<group>"; };
 		BD38E753115D1AAC001CE05C /* TabbedMainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabbedMainView.h; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				636E828D14D9DD1E002F9B6D /* Twitter.framework in Frameworks */,
 				FA3C79E2136ED8BB002302E5 /* CoreMedia.framework in Frameworks */,
 				FA3C79AE136ED523002302E5 /* CoreVideo.framework in Frameworks */,
 				FA4D3F8D136B0A98009D6E63 /* libiconv.dylib in Frameworks */,
@@ -385,6 +388,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				636E828C14D9DD1E002F9B6D /* Twitter.framework */,
 				FA3C79E1136ED8BB002302E5 /* CoreMedia.framework */,
 				FA3C79AD136ED523002302E5 /* CoreVideo.framework */,
 				FA4D3F8C136B0A98009D6E63 /* libiconv.dylib */,
