@@ -782,8 +782,6 @@ public class TabbedMainView implements MainView {
 				return;
 			}
 			boolean real_change = (tabIndex != new_tabIndex);
-			if (RhoConf.getBool("call_tab_change_on_same_tab"))
-			  real_change = true;
 
 			if (real_change && byself) {
 				tabHost.setCurrentTab(new_tabIndex);
@@ -792,7 +790,14 @@ public class TabbedMainView implements MainView {
 			}
 			tabIndex = new_tabIndex;
 
-			if (real_change && (mChangeTabCallback != null)) {
+			boolean callChangeTabCallback = real_change;
+			if (RhoConf.getBool("call_tab_change_on_same_tab")) {
+				//Utils.platformLog("#$#$#$#$#$#$#$#$#$", "Can call tab change on same tab - change callback is "+mChangeTabCallback);
+			  callChangeTabCallback = true;
+			}
+
+			if (callChangeTabCallback && (mChangeTabCallback != null)) {
+				//Utils.platformLog("#$#$#$#$#$#$#$#$#$", "Calling change tab callback with index "+tabIndex);
 				callChangeTabCallback(tabIndex);
 			}
 			
