@@ -29,6 +29,7 @@
 #import "Rhodes.h"
 #import "AppManager.h"
 
+#include "common/RhoConf.h"
 #include "common/RhodesApp.h"
 #include "logging/RhoLog.h"
 
@@ -579,21 +580,6 @@
 	[self onSwitchTab];
 }
 
-- (void)onSwitchTab {
-	int new_index = tabbar.selectedIndex;
-    RhoTabBarData *td = [self tabData:new_index];
-	if (td != nil) {
-		tabindex = new_index;
-		if (!td.loaded || td.reload) {
-			const char *s = [td.url UTF8String];
-			rho_rhodesapp_load_url(s);
-			td.loaded = YES;
-		}
-        [[self subView:tabindex] view].backgroundColor = [UIColor blackColor];
-		[[[self subView:tabindex] view] setNeedsDisplay];
-	}
-}
-
 -(void)callCallback:(int)new_index {
     // call callback
     if (self.on_change_tab_callback != nil) {
@@ -608,6 +594,22 @@
     }
 }
 
+- (void)onSwitchTab {
+	int new_index = tabbar.selectedIndex;
+    RhoTabBarData *td = [self tabData:new_index];
+	if (td != nil) {
+		tabindex = new_index;
+		if (!td.loaded || td.reload) {
+			const char *s = [td.url UTF8String];
+			rho_rhodesapp_load_url(s);
+			td.loaded = YES;
+		}
+ 		if (rho_conf_getBool("call_tab_change_on_same_tab"))
+        [self callCallback:new_index];
+    [[self subView:tabindex] view].backgroundColor = [UIColor blackColor];
+		[[[self subView:tabindex] view] setNeedsDisplay];
+	}
+}
 
 - (void)onSwitchTab:(int)tab_index {
 	int new_index = tab_index;
@@ -623,9 +625,11 @@
         }
         [[[self subView:tabindex] view] setNeedsDisplay];
 		//}
-		if (real_change) {
-            [self callCallback:new_index];
-        }
+    if (rho_conf_getBool("call_tab_change_on_same_tab"))
+      real_change = YES;
+    if (real_change) {
+      [self callCallback:new_index];
+    }
 	}
 }
 
