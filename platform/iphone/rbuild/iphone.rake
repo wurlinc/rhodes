@@ -950,6 +950,7 @@ namespace "run" do
            system(commandis)
        end
     }
+    sleep(4)
   
     puts "end build iphone app"  
     exit
