@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-require "lib/rhodes.rb"
+require File.join(File.dirname(__FILE__), "lib/rhodes.rb")
 
 `cp Rakefile rakefile.rb`
 
