@@ -33,6 +33,7 @@
 #import "RhoMainView.h"
 
 #import "SplashViewController.h"
+#import "InteractiveSplash.h"
 #import "LogOptionsController.h"
 #import "LogViewController.h"
 #import "DateTimePickerDelegate.h"
@@ -50,6 +51,7 @@
     NSMutableDictionary *cookies;
     // Controllers
     SplashViewController *splashViewController;
+    InteractiveSplash    *interactiveSplashController;
     LogOptionsController* logOptionsController;
     LogViewController* logViewController;
     DateTimePickerDelegate* dateTimePickerDelegate;

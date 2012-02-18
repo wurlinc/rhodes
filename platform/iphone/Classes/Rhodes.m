@@ -422,6 +422,13 @@ static Rhodes *instance = NULL;
 		[window addSubview:mainView.view];
 		[window bringSubviewToFront:mainView.view];
     }
+    if (interactiveSplashController) {
+        [interactiveSplashController hideSplash];
+        [interactiveSplashController release];
+        interactiveSplashController = nil;
+		[window addSubview:mainView.view];
+		[window bringSubviewToFront:mainView.view];
+    }
 }
 
 - (void)setMainView:(id<RhoMainView,NSObject>)view {
@@ -465,6 +472,7 @@ static Rhodes *instance = NULL;
 	}
 	
     mainView = [view retain];
+    [self rootWindow].rootViewController = mainView;
     [window addSubview:mainView.view];
 	//[window bringSubviewToFront:mainView.view];
 	
@@ -483,24 +491,41 @@ static Rhodes *instance = NULL;
     return mainView;
 }
 
+#define INTERACTIVE_SPLASH_FILENAME "/apps/app/interactive_splash/splash.html"
 
+- (BOOL) hasInteractiveSplash
+{
+    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+    NSString *interactiveSplashPath = [resourcePath stringByAppendingString:@INTERACTIVE_SPLASH_FILENAME];
+    return [[NSFileManager defaultManager] fileExistsAtPath:interactiveSplashPath];
+}
+
+- (BOOL) maybeShowInteractiveSplash
+{
+    if ( [self hasInteractiveSplash] ) {
+        interactiveSplashController = [[InteractiveSplash alloc] init];
+        [interactiveSplashController addToWindow:window];
+        interactiveSplashController.url = @INTERACTIVE_SPLASH_FILENAME;
+        return YES;
+    } else {
+        return NO;
+    }
+}
 
 // make splash screen
 // return YES if SplashScreen maked 
 - (BOOL) showLoadingPagePre 
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    
     NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
     NSString *htmPath = [NSString stringWithFormat:@"%@/apps/app/loading.html", resourcePath];
-    
+
     if ([SplashViewController hasLoadingImage]) {
         splashViewController = [[SplashViewController alloc] initWithParentView:window];
-    }
-    else if ([fileManager fileExistsAtPath:htmPath]) {
-        NSError *err;
-        NSString *data = [NSString stringWithContentsOfFile:htmPath encoding:NSUTF8StringEncoding error:&err];
-        [mainView loadHTMLString:data];
+    } else if ([fileManager fileExistsAtPath:htmPath]) {
+        NSString *fileURL = [NSString stringWithFormat:@"file://%@",htmPath];
+        [mainView loadHTMLString:@"<html></html>"]; // Trigger whatever this triggers.
+        [mainView navigate:@"/app/loading.html" tab:-1];
     }
 	return [SplashViewController hasLoadingImage];
 }
@@ -508,11 +533,16 @@ static Rhodes *instance = NULL;
 // execute rho_splash_screen_start(); - we can do it only after Rhodes initialization
 - (void) showLoadingPagePost
 {
+    if ([self hasInteractiveSplash]) {
+        rho_splash_screen_start();
+        return;
+    }
+    
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
     NSString *htmPath = [NSString stringWithFormat:@"%@/apps/app/loading.html", resourcePath];
     
-    if (splashViewController != nil) {
+    if (splashViewController != nil ) {
 		rho_splash_screen_start();
     }
     else if ([fileManager fileExistsAtPath:htmPath]) {
@@ -590,19 +620,24 @@ static Rhodes *instance = NULL;
     window.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     window.autoresizesSubviews = YES;
 	
+    BOOL interactive_splash_shown = [self maybeShowInteractiveSplash];
+    if ( interactive_splash_shown ) {
+        [window makeKeyAndVisible];
+    }
+    
     mainView = nil;
     mainView = [[SimpleMainView alloc] initWithParentView:window frame:[Rhodes applicationFrame]];
     mainView.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     mainView.view.autoresizesSubviews = YES;
-    
-	BOOL is_splash_screen_maked = [self showLoadingPagePre];
+    if (! interactive_splash_shown) {
+        BOOL is_splash_screen_maked = [self showLoadingPagePre];
 	
-	if (!is_splash_screen_maked) {
-		[window addSubview:mainView.view];
-	}
+        if (!is_splash_screen_maked) {
+            [window addSubview:mainView.view];
+        }
 	
-    [window makeKeyAndVisible];
-
+        [window makeKeyAndVisible];
+    }
  
 	CGRect rrr = [application statusBarFrame];
 	
