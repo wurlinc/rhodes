@@ -418,17 +418,9 @@ static Rhodes *instance = NULL;
         [splashViewController hideSplash];
         [splashViewController release];
         splashViewController = nil;
-		
-		[window addSubview:mainView.view];
-		[window bringSubviewToFront:mainView.view];
     }
-    if (interactiveSplashController) {
-        [interactiveSplashController hideSplash];
-        [interactiveSplashController release];
-        interactiveSplashController = nil;
-		[window addSubview:mainView.view];
-		[window bringSubviewToFront:mainView.view];
-    }
+    [window addSubview:mainView.view];
+    [window bringSubviewToFront:mainView.view];
 }
 
 - (void)setMainView:(id<RhoMainView,NSObject>)view {
@@ -500,9 +492,10 @@ static Rhodes *instance = NULL;
     NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
     NSString *htmPath = [NSString stringWithFormat:@"%@/apps/app/loading.html", resourcePath];
 
-    if ([SplashViewController hasLoadingImage]) {
-        splashViewController = [[SplashViewController alloc] initWithParentView:window];
-    } else if ([fileManager fileExistsAtPath:htmPath]) {
+//    if ([SplashViewController hasLoadingImage]) {
+//        splashViewController = [[SplashViewController alloc] initWithParentView:window];
+//    } else 
+    if ([fileManager fileExistsAtPath:htmPath]) {
         NSString *fileURL = [NSString stringWithFormat:@"file://%@",htmPath];
         [mainView loadHTMLString:@"<html></html>"]; // Trigger whatever this triggers.
         [mainView navigate:@"/app/loading.html" tab:-1];
@@ -513,21 +506,19 @@ static Rhodes *instance = NULL;
 // execute rho_splash_screen_start(); - we can do it only after Rhodes initialization
 - (void) showLoadingPagePost
 {
-    if ([InteractiveSplash hasInteractiveSplash]) {
-        rho_splash_screen_start();
-        return;
-    }
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
     NSString *htmPath = [NSString stringWithFormat:@"%@/apps/app/loading.html", resourcePath];
     
+    if ( splashViewController ) {
+        rho_splash_screen_start();
+        return;
+    } else 
     if (splashViewController != nil ) {
 		rho_splash_screen_start();
-    }
-    else if ([fileManager fileExistsAtPath:htmPath]) {
+    } else if ([fileManager fileExistsAtPath:htmPath]) {
 		rho_splash_screen_start();
-		
     }
 }
 
@@ -581,17 +572,12 @@ static Rhodes *instance = NULL;
 }
 
 - (void)doPrepareWindowAndFrame {
+    NSLog(@"Init all windows");
     instance = self;
     application = [UIApplication sharedApplication];
     rotationLocked = NO;
     
     [NSThread setThreadPriority:1.0];
-    
-    NSLog(@"Create new detached thread for initialization stuff");
-    [NSThread detachNewThreadSelector:@selector(doRhoInit) toTarget:self withObject:nil];
-    
-    NSLog(@"Init all windows");
-    
     
     window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     window.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -603,7 +589,17 @@ static Rhodes *instance = NULL;
     
 }
 
+- (void) clearInteractiveSplash
+{
+    [splashViewController release];
+    splashViewController = nil;
+}
+
 - (void)doStartUp {
+    // Continue with initialization
+    NSLog(@"Create new detached thread for initialization stuff");
+    [NSThread detachNewThreadSelector:@selector(doRhoInit) toTarget:self withObject:nil];
+
     NSLog(@"Rhodes starting application...");
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
@@ -612,13 +608,13 @@ static Rhodes *instance = NULL;
     mainView = [[SimpleMainView alloc] initWithParentView:window frame:[Rhodes applicationFrame]];
     mainView.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     mainView.view.autoresizesSubviews = YES;
-    if (! [InteractiveSplash hasInteractiveSplash]) {
+    if (! splashViewController) {
         BOOL is_splash_screen_maked = [self showLoadingPagePre];
 	
         if (!is_splash_screen_maked) {
             [window addSubview:mainView.view];
         }
-	
+        [window setNeedsLayout];
         [window makeKeyAndVisible];
     }
  
@@ -985,8 +981,10 @@ static Rhodes *instance = NULL;
 // Native functions
 
 void rho_app_interactivesplash_done() {
+    [[Rhodes sharedInstance] clearInteractiveSplash];
     [[Rhodes sharedInstance] doStartUp];
 	[[Rhodes sharedInstance] processDoSync:NULL];
+//    [[Rhodes sharedInstance] doRhoActivate];
 }
 
 void rho_map_location(char* query) {
