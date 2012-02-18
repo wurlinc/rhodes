@@ -200,6 +200,9 @@ void rho_splash_screen_hide();
 /** UIWebview Delegate */
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if ( navigationType == UIWebViewNavigationTypeLinkClicked )
+        return YES;
+    
     if ( [[request URL] isFileURL] ) {
         if ( ! [[NSFileManager defaultManager] fileExistsAtPath:[[request URL] path]] ) {
            NSLog(@"File %@ not found locally. Ignoring.", [[request URL] path]);
