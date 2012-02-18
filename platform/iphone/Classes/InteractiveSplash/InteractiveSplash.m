@@ -40,7 +40,6 @@
 #pragma mark Rhodes Forward Declarations
 
 void rho_app_interactivesplash_done();
-void rho_splash_screen_hide();
 
 
 #define INTERACTIVE_SPLASH_FILENAME "/apps/app/interactive_splash/splash.html"
@@ -235,7 +234,6 @@ void rho_splash_screen_hide();
     rho_app_interactivesplash_done();
     self.view.hidden = YES;
     [self.view removeFromSuperview];
-    rho_splash_screen_hide();
 }
 
 #pragma mark UIWebView Delegate Start
