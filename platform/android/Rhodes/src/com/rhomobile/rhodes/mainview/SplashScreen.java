@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import com.rhomobile.rhodes.Logger;
 import com.rhomobile.rhodes.RhodesActivity;
 import com.rhomobile.rhodes.RhodesService;
 import com.rhomobile.rhodes.util.PerformOnUiThread;
@@ -42,7 +41,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.View;
-import android.webkit.WebView;
+import android.webkit.*;
 import android.widget.ImageView;
 
 public class SplashScreen implements MainView {
@@ -123,7 +122,8 @@ public class SplashScreen implements MainView {
 		
 		// Now create WebView and load appropriate content there
 		WebView view = new WebView(context);
-		
+        configureWebView(view);
+
 		if (hasNeededPage)
 			view.loadUrl("file:///android_asset/" + page);
 		else
@@ -131,7 +131,33 @@ public class SplashScreen implements MainView {
 		
 		return view;
 	}
-	
+
+	private void configureWebView(WebView targetView) {
+		String splashJSClass = getSplashJSClass();// Dang. Rhoconf is not available here yet. RhoConf.getString("android_splash_jsinterface_class");
+		if ( splashJSClass != null ) {
+			Log.d(TAG, "Splash JS Interface: "+splashJSClass);
+            targetView.getSettings().setJavaScriptEnabled(true);
+            targetView.setWebChromeClient(new WebChromeClient());
+            targetView.setWebViewClient(new WebViewClient());
+			targetView.getSettings().setJavaScriptEnabled(true);
+            try {
+                Class jsClass = Class.forName(splashJSClass);
+                Object jsInterface = jsClass.newInstance();
+                targetView.addJavascriptInterface(jsInterface, "splash");
+            } catch (IllegalAccessException e) {
+                Log.e(TAG, e.getLocalizedMessage(), e);
+            } catch (InstantiationException e) {
+                Log.e(TAG, e.getLocalizedMessage(), e);
+            } catch (ClassNotFoundException e) {
+                Log.e(TAG, e.getLocalizedMessage(), e);
+            }
+         }
+	}
+
+    private String getSplashJSClass() {
+        return "com.wurl.ui.SplashScreen";
+    }
+
 	public void start() {
 		nativeStart();
 	}

@@ -26,42 +26,29 @@
 
 package com.rhomobile.rhodes;
 
-import java.lang.reflect.Constructor;
-import java.lang.Thread;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.List;
-
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.*;
+import android.util.Log;
+import android.view.*;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import com.rhomobile.rhodes.bluetooth.RhoBluetoothManager;
 import com.rhomobile.rhodes.camera.Camera;
 import com.rhomobile.rhodes.mainview.MainView;
-import com.rhomobile.rhodes.mainview.SplashScreen;
 import com.rhomobile.rhodes.mainview.SimpleMainView;
-import com.rhomobile.rhodes.mainview.TabbedMainView;
+import com.rhomobile.rhodes.mainview.SplashScreen;
 import com.rhomobile.rhodes.util.PerformOnUiThread;
 import com.rhomobile.rhodes.util.Utils;
 import com.rhomobile.rhodes.webview.ChromeClientOld;
 import com.rhomobile.rhodes.webview.RhoWebSettings;
 import com.rhomobile.rhodes.webview.RhoWebViewClient;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-
-import javax.xml.transform.Result;
+import java.lang.reflect.Constructor;
+import java.util.*;
 
 public class RhodesActivity extends BaseActivity {
 	
@@ -69,7 +56,7 @@ public class RhodesActivity extends BaseActivity {
 	
 	private static final boolean DEBUG = true;
 	
-	private static final boolean USE_DELAYED_MAINVIEW_DISPLAY = true;
+//	private static final boolean USE_DELAYED_MAINVIEW_DISPLAY = true;
 	
 	public static boolean ENABLE_LOADING_INDICATION = true;
 	
@@ -379,38 +366,33 @@ public class RhodesActivity extends BaseActivity {
 		
         if (RhoConf.getBool("main_view_is_tabbed_view") && v instanceof SimpleMainView) {
             if (DEBUG)
-                Log.d(TAG, "Ignoring setMainView for because main_view_is_tabbed_view");
+                Log.d(TAG, "Ignoring setMainView for SimpleMainView because main_view_is_tabbed_view");
             return;
         }
 
 		// If there's no previous mMainView, don't wait
 		if (mMainView == null)
 			waitUntilNavigationDone = false;
-		
+
 		// Set mMainView right now but not yet do it visible
 		mMainView = v;
 
-		// This is action need to be executed when mMainView should become visible 
-		final Runnable setMainViewVisible = new Runnable() {
-			public void run() {
-				if (DEBUG)
-					Log.d(TAG, "setMainViewAction: v=" + v);
-				setContentView(v.getView());
-			}
-		};
+		// This is action need to be executed when mMainView should become visible
+        final Runnable setMainViewVisible = getSetMainViewTask();
 
-		if (!USE_DELAYED_MAINVIEW_DISPLAY || v instanceof SplashScreen /*|| !waitUntilNavigationDone*/) {
+        if ( v instanceof SplashScreen ) {
 			// Make new MainView visible right now
             Log.d(TAG, "Making MainView Visible Immediately:" + v);
 			setMainViewVisible.run();
-		}
-		else {
-            int waitTime = RhoConf.getInt("splash_wait");
-            //
-            if (DEBUG)
-                Log.d(TAG, "Making MainView Visible via onPageFinished:" + v + "after "+waitTime+"ms wait..");
-            new WaitThenDoTask(v, setMainViewVisible).execute(waitTime);
-            WebView webView = null;
+		} else {
+            String splashJSClass = RhoConf.getString("android_splash_jsinterface_class");
+            if ( splashJSClass == null ) {
+                int waitTime = RhoConf.getInt("splash_wait");
+                if (DEBUG)
+                    Log.d(TAG, "Making MainView Visible via onPageFinished:" + v + "after "+waitTime+"ms wait..");
+                new WaitThenDoTask(v, setMainViewVisible).execute(waitTime);
+                WebView webView = null;
+            }
 			// If we're requested to wait until first navigation will be done,
 			// use the trick: keep current main view until first navigate will be
 			// finished in the new MainView.
@@ -435,8 +417,18 @@ public class RhodesActivity extends BaseActivity {
 //			});
 		}
 	}
-	
-	public MainView getMainView() {
+
+    public Runnable getSetMainViewTask() {
+        return new Runnable() {
+                public void run() {
+                    if (DEBUG)
+                        Log.d(TAG, "setMainViewAction: v=" + mMainView);
+                    setContentView(mMainView.getView());
+                }
+            };
+    }
+
+    public MainView getMainView() {
 		return mMainView;
 	}
 	
