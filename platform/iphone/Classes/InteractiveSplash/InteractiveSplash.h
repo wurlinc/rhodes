@@ -15,6 +15,7 @@
 
 /** The URL that we will load. Set so we can load it. */
 @property (nonatomic, copy, readwrite) NSString *url;
+@property (readonly) UIWebView *webView;
 
 /** 
  * A delegate to subscribe to events.
@@ -26,8 +27,11 @@
 - (void)hide;
 - (void) addToWindow:(UIWindow *)window;
 - (NSString*)encodeUrl:(NSString*)url;
-- (void)hideSplash;
+- (void)closeSplash;
+- (NSString *) stringByEvaluatingJavascriptString:(NSString *)string;
 
++ (InteractiveSplash*) maybeShowInteractiveSplashInWindow:(UIWindow*)window;
++ (BOOL) hasInteractiveSplash;
 
 /* Delegate not running. Trying to declare these */
 

@@ -51,6 +51,8 @@
     NSMutableDictionary *cookies;
     // Controllers
     SplashViewController *splashViewController;
+    // LaunchOptions. Kept while splash is going
+    NSDictionary *appLaunchOptions;
     InteractiveSplash    *interactiveSplashController;
     LogOptionsController* logOptionsController;
     LogViewController* logViewController;

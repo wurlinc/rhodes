@@ -491,26 +491,6 @@ static Rhodes *instance = NULL;
     return mainView;
 }
 
-#define INTERACTIVE_SPLASH_FILENAME "/apps/app/interactive_splash/splash.html"
-
-- (BOOL) hasInteractiveSplash
-{
-    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
-    NSString *interactiveSplashPath = [resourcePath stringByAppendingString:@INTERACTIVE_SPLASH_FILENAME];
-    return [[NSFileManager defaultManager] fileExistsAtPath:interactiveSplashPath];
-}
-
-- (BOOL) maybeShowInteractiveSplash
-{
-    if ( [self hasInteractiveSplash] ) {
-        interactiveSplashController = [[InteractiveSplash alloc] init];
-        [interactiveSplashController addToWindow:window];
-        interactiveSplashController.url = @INTERACTIVE_SPLASH_FILENAME;
-        return YES;
-    } else {
-        return NO;
-    }
-}
 
 // make splash screen
 // return YES if SplashScreen maked 
@@ -533,7 +513,7 @@ static Rhodes *instance = NULL;
 // execute rho_splash_screen_start(); - we can do it only after Rhodes initialization
 - (void) showLoadingPagePost
 {
-    if ([self hasInteractiveSplash]) {
+    if ([InteractiveSplash hasInteractiveSplash]) {
         rho_splash_screen_start();
         return;
     }
@@ -600,8 +580,7 @@ static Rhodes *instance = NULL;
     
 }
 
-- (void)doStartUp {
-    NSLog(@"Rhodes starting application...");
+- (void)doPrepareWindowAndFrame {
     instance = self;
     application = [UIApplication sharedApplication];
     rotationLocked = NO;
@@ -614,22 +593,26 @@ static Rhodes *instance = NULL;
     NSLog(@"Init all windows");
     
     
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
-    
     window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     window.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     window.autoresizesSubviews = YES;
-	
-    BOOL interactive_splash_shown = [self maybeShowInteractiveSplash];
-    if ( interactive_splash_shown ) {
+    interactiveSplashController = [InteractiveSplash maybeShowInteractiveSplashInWindow:window];
+    if ( interactiveSplashController ) {
         [window makeKeyAndVisible];
     }
+    
+}
+
+- (void)doStartUp {
+    NSLog(@"Rhodes starting application...");
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
     
     mainView = nil;
     mainView = [[SimpleMainView alloc] initWithParentView:window frame:[Rhodes applicationFrame]];
     mainView.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     mainView.view.autoresizesSubviews = YES;
-    if (! interactive_splash_shown) {
+    if (! [InteractiveSplash hasInteractiveSplash]) {
         BOOL is_splash_screen_maked = [self showLoadingPagePre];
 	
         if (!is_splash_screen_maked) {
@@ -669,9 +652,14 @@ static Rhodes *instance = NULL;
     NSLog(@"Initialization finished");
 }
 
+
+
 #ifdef __IPHONE_3_0
 - (void)processDoSync:(NSDictionary *)userInfo
 {
+    if (userInfo == NULL) {
+        userInfo = appLaunchOptions;
+    }
 	NSArray *do_sync = [userInfo objectForKey:@"do_sync"];
 	if (do_sync) {
 		NSEnumerator *enumerator = [do_sync objectEnumerator];
@@ -837,9 +825,14 @@ static Rhodes *instance = NULL;
 			}
 		}
 	}	
+    [self doPrepareWindowAndFrame];
     
-	[self doStartUp];
-	[self processDoSync:launchOptions];
+    if (! interactiveSplashController ) {
+        [self doStartUp];
+        [self processDoSync:launchOptions];
+    } else {
+        appLaunchOptions = [launchOptions copy];
+    }
 
     if ( !rho_rhodesapp_canstartapp([start_parameter UTF8String], ", ") )
     {
@@ -990,6 +983,11 @@ static Rhodes *instance = NULL;
 @end
 
 // Native functions
+
+void rho_app_interactivesplash_done() {
+    [[Rhodes sharedInstance] doStartUp];
+	[[Rhodes sharedInstance] processDoSync:NULL];
+}
 
 void rho_map_location(char* query) {
     [[Rhodes sharedInstance] mapLocation:[NSString stringWithUTF8String:query]];

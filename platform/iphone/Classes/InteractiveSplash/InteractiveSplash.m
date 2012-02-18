@@ -39,7 +39,62 @@
 
 #pragma mark Rhodes Forward Declarations
 
+void rho_app_interactivesplash_done();
 void rho_splash_screen_hide();
+
+
+#define INTERACTIVE_SPLASH_FILENAME "/apps/app/interactive_splash/splash.html"
+
+#define CONFIG_FILENAME "/apps/rhoconfig.txt"
+#define INTERACIVE_SPLASH_CONFIG_ENTRY "iphone_splash_delegate_class"
+
+
+#pragma mark Factory and Utility
++ (BOOL) hasInteractiveSplash
+{
+    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+    NSString *interactiveSplashPath = [resourcePath stringByAppendingString:@INTERACTIVE_SPLASH_FILENAME];
+    return [[NSFileManager defaultManager] fileExistsAtPath:interactiveSplashPath];
+}
+
++ (InteractiveSplash*) maybeShowInteractiveSplashInWindow:(UIWindow*)window
+{
+    InteractiveSplash *splash;
+    if ( [self hasInteractiveSplash] ) {
+        splash = [[InteractiveSplash alloc] init];
+        [splash addToWindow:window];
+        splash.url = @INTERACTIVE_SPLASH_FILENAME;
+    }
+    return splash;
+}
+
++(NSString*) readDelegateClassName
+{
+    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+    NSString *configFilePath = [resourcePath stringByAppendingString:@CONFIG_FILENAME];
+    NSError *error = nil;
+    NSString *configString  = [NSString stringWithContentsOfFile:configFilePath encoding:NSUTF8StringEncoding error:&error];
+    if (!configString) {
+        NSLog(@"Error: %@", error);
+        return nil;
+    }
+    NSArray *lines = [configString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+    for (NSString* line in lines) {
+        NSArray  *nvpair = [line componentsSeparatedByString:@"="];
+        NSString *potentialKey   = [nvpair objectAtIndex:0];
+        NSString *potentialValue = [nvpair lastObject];
+        if ( [potentialKey isEqualToString:@INTERACIVE_SPLASH_CONFIG_ENTRY] ) {
+            return [potentialValue stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        }
+    }
+    return NULL;
+}
+
+- (UIWebView*) webView
+{
+    UIWebView* _wv = [[[self view] subviews] lastObject];
+    return _wv;
+}
 
 #pragma mark Networking Stuff
 
@@ -54,9 +109,10 @@ void rho_splash_screen_hide();
     return fileURL;
 }
 
+
 - (void) loadURL {
     // Assumes webview is always last.
-    UIWebView* _wv = [[[self view] subviews] lastObject];
+    UIWebView* _wv = [self webView];
     if (!self.url || !_wv) {
         NSLog(@"InteractiveSplash no Webview or URL. Not loading URL yet.");
         return;
@@ -69,44 +125,26 @@ void rho_splash_screen_hide();
     NSURL* urlToLoad = [NSURL URLWithString:encodedUrl];
     
     NSLog(@"InteractiveSplash Requesting URL %@ in InteractiveSplash view into %@", encodedUrl, _wv);
-//    if ([urlToLoad isFileURL]) {
-//        // Load the file and put it in.
-//        NSError *err;
-//        NSString *data = [NSString stringWithContentsOfFile:[urlToLoad path] encoding:NSUTF8StringEncoding error:&err];
-////        NSString *data = @"<html><body bgcolor='yellow'><h1>DUDE</h1></body></html>";
-//        NSLog(@"InteractiveSplash Requesting URL %@ as File URL with data: %@", [urlToLoad path], data);
-////        [urlToLoad URLByDeletingLastPathComponent]
-//        [_wv loadHTMLString:data baseURL:urlToLoad]; // URL to load or URLByDeletingLastPathComponent?
-////        [_wv loadData:[data dataUsingEncoding:NSUTF8StringEncoding] MIMEType:@"text/html" textEncodingName:@"utf-8" baseURL:urlToLoad];
-//        NSLog(@"InteractiveSplash Loaded Data as a file");
-//
-//    } else {
         NSLog(@"Requesting URL %@ as Request URL", encodedUrl);
         NSURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:urlToLoad];
         [_wv loadRequest:request];
         [request release];
-//    }
     [_wv loadRequest:[self requestFromURL:self.url]];
     self.loaded = true;
 }
 
-// XXX For some reason doing it here doesn't show the splash.
-//-(void) setUrl:(NSString *)url {
-//    _url = url;
-//    if (url) {
-//        self.loaded = false;
-//        [self loadURL];
-//    }
-//}
 
-#pragma mark Window Management
+#pragma mark Window Management and Interaction
+
+- (NSString *) stringByEvaluatingJavascriptString:(NSString *)string
+{
+    // Just forward the call.
+    return [self.webView stringByEvaluatingJavaScriptFromString:string];
+}
 
 - (void) hide {
-//    rho_splash_screen_hide(); // This may do the delay we need to do.
-//    if (self.showsStatusBarOnDismissal) {
         UIApplication *app = [UIApplication sharedApplication];
         [app setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-//    }
     [self dismissModalViewControllerAnimated:YES];
 }
 
@@ -144,14 +182,7 @@ void rho_splash_screen_hide();
 - (void)viewDidLoad {
     self.url = nil;
     
-//    CGRect labelFrame = CGRectMake( 05, 05, 230, 30 );
-//    UILabel* label = [[UILabel alloc] initWithFrame: labelFrame];
-//    [label setText: @"Proving this works well."];
-//    [label setTextColor: [UIColor orangeColor]];
-//    [self.view addSubview: label];
-    
     CGRect webViewFrame = [[UIScreen mainScreen] applicationFrame];
-//    CGRect webViewFrame = CGRectMake(50, 50, 240, 300);
     self.view.frame = webViewFrame;
     NSLog(@"InteractiveSplash Loading Webview");
     UIWebView* _wv = [[UIWebView alloc] initWithFrame:webViewFrame];
@@ -164,17 +195,24 @@ void rho_splash_screen_hide();
     _wv.dataDetectorTypes = UIDataDetectorTypeNone;
     _wv.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     //	webView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    _wv.backgroundColor = [UIColor redColor];
-    _wv.hidden = NO;
-    _wv.opaque = YES;
-    
+    _wv.hidden = YES;
+    _wv.opaque = NO;
+    _wv.backgroundColor = [UIColor clearColor];
     self.view.backgroundColor = [UIColor blackColor];
+    
     NSLog(@"InteractiveSplash Loading Webview Done.");
     //    [parentView addSubview:splashView];
     //    [self addToWindow:[[UIApplication sharedApplication] keyWindow]];
     self.view.autoresizesSubviews = YES;
     [self.view addSubview:_wv];
     _wv.delegate = self;
+    
+    NSString *delegateClassName = [InteractiveSplash readDelegateClassName];
+    if ( delegateClassName ) {
+        NSLog(@"Splash Delegate: %@", delegateClassName);
+        id obj = [[NSClassFromString(delegateClassName) alloc] init];
+        self.delegate = obj;
+    }
 }
 
 #pragma mark Lifted from elsewhere in Rhodes
@@ -190,14 +228,29 @@ void rho_splash_screen_hide();
 
 /* hideSplash gets called from a separate thread. We force it to wait using CSplashScreen and
    only then we call hide. */
-- (void)hideSplash {
+- (void)closeSplash {
+    [self stringByEvaluatingJavascriptString:@"if ( typeof(splash_will_close) == 'function' ) { splash_will_close(); }"];
+    if (self.delegate)
+        [self.delegate splashScreenWillDisappear:self];
+    rho_app_interactivesplash_done();
+    self.view.hidden = YES;
+    [self.view removeFromSuperview];
     rho_splash_screen_hide();
-    [self hide];
 }
-
 
 #pragma mark UIWebView Delegate Start
 /** UIWebview Delegate */
+
+- (void) handleSplashCommand:(NSURLRequest *)splashCommand {
+    
+    NSString *baseCommand = [[splashCommand URL] resourceSpecifier];
+    // Handle Internal Commands
+    if ([baseCommand isEqualToString:@"//close"]) {
+        [self closeSplash];
+    } else if (self.delegate) {
+        [self.delegate handleSplashCommand:splashCommand WithInteractiveSplash:self];
+    }
+}
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if ( navigationType == UIWebViewNavigationTypeLinkClicked )
@@ -212,8 +265,8 @@ void rho_splash_screen_hide();
         }
     }
     if ( [[[request URL] scheme] isEqualToString:@"splash"]  ) {
-        NSLog(@"InteractiveSplash shouldStartLoadWithRequest scheme Splash. TODO Implement calls!");
-        return YES;
+        [self handleSplashCommand:request];
+        return NO;
     } else { // No Network URLs. Only local and splash
         return NO;
     }
@@ -225,8 +278,9 @@ void rho_splash_screen_hide();
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    UIWebView* _wv = [[[self view] subviews] lastObject];
+    UIWebView* _wv = [self webView];
     _wv.hidden = NO;
+    _wv.opaque = YES;
     NSLog(@"InteractiveSplash finished loading");
 
 }
