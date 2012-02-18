@@ -53,7 +53,9 @@ public class SplashScreen implements MainView {
 	private static final String LOADING_ANDROID_PNG = "apps/app/loading.android.png";
 	private static final String LOADING_PNG = "apps/app/loading.png";
 	private static final String LOADING_PAGE = "apps/app/loading.html";
-	
+
+    private static final String INTERACTIVE_SPLASHSCREEN = "app/interactive_splash/splash.html";
+
 	private View mContentView;
 	
 	private WebView mWebView;
@@ -99,36 +101,45 @@ public class SplashScreen implements MainView {
 		
 		return null;
 	}
-	
-	private View createHtmlView(Context context, AssetManager am) {
-		boolean hasNeededPage;
 
-		String page = LOADING_PAGE;
-		InputStream is = null;
-		try {
-			is = am.open(page);
-			hasNeededPage = true;
-		} catch (IOException e) {
-			if (DEBUG)
-				Log.d(TAG, "Can't load " + page, e);
-			hasNeededPage = false;
-		}
-		finally {
-			if (is != null)
-				try {
-					is.close();
-				} catch (IOException e) {}
-		}
-		
+    private boolean assetExists(AssetManager am, String assetPath) {
+        boolean hasNeededPage = false;
+        InputStream is = null;
+        try {
+            is = am.open(assetPath);
+            hasNeededPage = true;
+        } catch (IOException e) {
+            if (DEBUG)
+                Log.d(TAG, "Can't load " + assetPath, e);
+            hasNeededPage = false;
+        }
+        finally {
+            if (is != null)
+                try {
+                    is.close();
+                } catch (IOException e) {}
+        }
+        return hasNeededPage;
+    }
+
+	private View createHtmlView(Context context, AssetManager am) {
+        String page = null;
+        if ( assetExists(am, INTERACTIVE_SPLASHSCREEN) ) {
+            page = LOADING_PAGE;
+        } else if ( assetExists(am, LOADING_PAGE)  ) {
+            page = INTERACTIVE_SPLASHSCREEN;
+        }
+
 		// Now create WebView and load appropriate content there
 		WebView view = new WebView(context);
         configureWebView(view);
 
-		if (hasNeededPage)
+		if (page != null) {
+            Log.d(TAG, "Loading asset "+page+" as splash screen");
 			view.loadUrl("file:///android_asset/" + page);
-		else
+        } else {
 			view.loadData("<html><title>Loading</title><body>Loading...</body></html>", "text/html", "utf-8");
-		
+        }
 		return view;
 	}
 
