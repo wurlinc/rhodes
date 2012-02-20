@@ -30,6 +30,10 @@
 
 #import "InteractiveSplash.h"
 #import "RhodesAppBase.h"
+#import "SplashRhoConfig.h"
+
+#define INTERACTIVE_SPLASH_FILENAME "/apps/app/interactive_splash/splash.html"
+#define INTERACIVE_SPLASH_CONFIG_ENTRY "iphone_splash_delegate_class"
 
 @implementation InteractiveSplash
 
@@ -40,12 +44,6 @@
 #pragma mark Rhodes Forward Declarations
 
 void rho_app_interactivesplash_done();
-
-
-#define INTERACTIVE_SPLASH_FILENAME "/apps/app/interactive_splash/splash.html"
-
-#define CONFIG_FILENAME "/apps/rhoconfig.txt"
-#define INTERACIVE_SPLASH_CONFIG_ENTRY "iphone_splash_delegate_class"
 
 
 #pragma mark Factory and Utility
@@ -69,24 +67,7 @@ void rho_app_interactivesplash_done();
 
 +(NSString*) readDelegateClassName
 {
-    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
-    NSString *configFilePath = [resourcePath stringByAppendingString:@CONFIG_FILENAME];
-    NSError *error = nil;
-    NSString *configString  = [NSString stringWithContentsOfFile:configFilePath encoding:NSUTF8StringEncoding error:&error];
-    if (!configString) {
-        NSLog(@"Error: %@", error);
-        return nil;
-    }
-    NSArray *lines = [configString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-    for (NSString* line in lines) {
-        NSArray  *nvpair = [line componentsSeparatedByString:@"="];
-        NSString *potentialKey   = [nvpair objectAtIndex:0];
-        NSString *potentialValue = [nvpair lastObject];
-        if ( [potentialKey isEqualToString:@INTERACIVE_SPLASH_CONFIG_ENTRY] ) {
-            return [potentialValue stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-        }
-    }
-    return NULL;
+    return [[SplashRhoConfig rhoConfig] valueForKey:@INTERACIVE_SPLASH_CONFIG_ENTRY];
 }
 
 - (UIWebView*) webView
