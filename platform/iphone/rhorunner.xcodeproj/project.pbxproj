@@ -35,8 +35,9 @@
 		5C53337B0FC1B20000F268F0 /* NetRequestImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5333790FC1B20000F268F0 /* NetRequestImpl.m */; };
 		5C59AB2912DDA1B800ED4A1E /* RhoCryptImpl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C59AB2812DDA1B800ED4A1E /* RhoCryptImpl.mm */; };
 		5C59AB4212DDA22E00ED4A1E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C59AB4112DDA22E00ED4A1E /* Security.framework */; };
-		63C7AE4A1472D55300ACF16F /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C7AE491472D55300ACF16F /* MediaPlayer.framework */; };
 		636E828D14D9DD1E002F9B6D /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 636E828C14D9DD1E002F9B6D /* Twitter.framework */; };
+		63C7AE4A1472D55300ACF16F /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C7AE491472D55300ACF16F /* MediaPlayer.framework */; };
+		63D098A614F0EB330003A961 /* InteractiveSplash.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D098A414F0EB330003A961 /* InteractiveSplash.m */; };
 		BD38E6DC115CFF14001CE05C /* WebView.m in Sources */ = {isa = PBXBuildFile; fileRef = BD38E6DB115CFF14001CE05C /* WebView.m */; };
 		BD38E755115D1AAC001CE05C /* TabbedMainView.m in Sources */ = {isa = PBXBuildFile; fileRef = BD38E754115D1AAC001CE05C /* TabbedMainView.m */; };
 		BD486F59124FB66600F8A93F /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = BD486F58124FB66600F8A93F /* Event.m */; };
@@ -218,8 +219,11 @@
 		5C59AB2812DDA1B800ED4A1E /* RhoCryptImpl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RhoCryptImpl.mm; path = ../shared/common/iphone/RhoCryptImpl.mm; sourceTree = SOURCE_ROOT; };
 		5C59AB4112DDA22E00ED4A1E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		5C7162920F8B7EEC0096B6AA /* RhoLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RhoLib.xcodeproj; path = RhoLib/RhoLib.xcodeproj; sourceTree = "<group>"; };
-		63C7AE491472D55300ACF16F /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/MediaPlayer.framework; sourceTree = DEVELOPER_DIR; };
 		636E828C14D9DD1E002F9B6D /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/Twitter.framework; sourceTree = DEVELOPER_DIR; };
+		63C7AE491472D55300ACF16F /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/MediaPlayer.framework; sourceTree = DEVELOPER_DIR; };
+		63D098A314F0EB330003A961 /* InteractiveSplash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveSplash.h; sourceTree = "<group>"; };
+		63D098A414F0EB330003A961 /* InteractiveSplash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractiveSplash.m; sourceTree = "<group>"; };
+		63D098A514F0EB330003A961 /* InteractiveSplashDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveSplashDelegate.h; sourceTree = "<group>"; };
 		BD2C94A610AE052A008D4692 /* curl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = curl.xcodeproj; path = curl/curl.xcodeproj; sourceTree = SOURCE_ROOT; };
 		BD38E6DB115CFF14001CE05C /* WebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebView.m; sourceTree = "<group>"; };
 		BD38E753115D1AAC001CE05C /* TabbedMainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabbedMainView.h; sourceTree = "<group>"; };
@@ -375,6 +379,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				63D098A214F0EB330003A961 /* InteractiveSplash */,
 				FA522E6C12DEA74F00AB55CC /* NativeView */,
 				BDC6F34611F4ABBF0056C1C3 /* icon57.png */,
 				BDC6F34711F4ABBF0056C1C3 /* icon72.png */,
@@ -558,6 +563,16 @@
 				5C7162970F8B7EEC0096B6AA /* librholib.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		63D098A214F0EB330003A961 /* InteractiveSplash */ = {
+			isa = PBXGroup;
+			children = (
+				63D098A314F0EB330003A961 /* InteractiveSplash.h */,
+				63D098A414F0EB330003A961 /* InteractiveSplash.m */,
+				63D098A514F0EB330003A961 /* InteractiveSplashDelegate.h */,
+			);
+			path = InteractiveSplash;
 			sourceTree = "<group>";
 		};
 		BD2C94DB10AE0A8C008D4692 /* Products */ = {
@@ -1046,6 +1061,7 @@
 				FA522E8112DEA7B300AB55CC /* RhoNativeViewManager.mm in Sources */,
 				FA52300D12E4BBC700AB55CC /* MapViewManager.m in Sources */,
 				FAC6EE6D143B3AF100B8E352 /* RhoMapViewController.m in Sources */,
+				63D098A614F0EB330003A961 /* InteractiveSplash.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

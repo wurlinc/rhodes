@@ -39,4 +39,5 @@
 - (void)splashScreenWillDisappear:(InteractiveSplash *)splashScreen;
 - (void)splashScreenDidDisappear:(InteractiveSplash *)splashScreen;
 - (void)handleSplashCommand:(NSURLRequest *)splashCommand WithInteractiveSplash:(InteractiveSplash *)interactiveSplash;
+- (void)splashScreenDidFinishLoading:(InteractiveSplash *)splashScreen;
 @end

@@ -280,6 +280,10 @@ void rho_app_interactivesplash_done();
     _wv.hidden = NO;
     _wv.opaque = YES;
     NSLog(@"InteractiveSplash finished loading");
+    if ( self.delegate ) {
+        NSLog(@"Splash Screen Did Finish Loading");
+        [self.delegate splashScreenDidFinishLoading:self];
+    }
 
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
