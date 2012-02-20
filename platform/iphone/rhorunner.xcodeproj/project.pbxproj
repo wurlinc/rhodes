@@ -224,6 +224,8 @@
 		63D098A314F0EB330003A961 /* InteractiveSplash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveSplash.h; sourceTree = "<group>"; };
 		63D098A414F0EB330003A961 /* InteractiveSplash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractiveSplash.m; sourceTree = "<group>"; };
 		63D098A514F0EB330003A961 /* InteractiveSplashDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveSplashDelegate.h; sourceTree = "<group>"; };
+		63D0997214F232E10003A961 /* SplashRhoConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashRhoConfig.h; sourceTree = "<group>"; };
+		63D0997314F232E10003A961 /* SplashRhoConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashRhoConfig.m; sourceTree = "<group>"; };
 		BD2C94A610AE052A008D4692 /* curl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = curl.xcodeproj; path = curl/curl.xcodeproj; sourceTree = SOURCE_ROOT; };
 		BD38E6DB115CFF14001CE05C /* WebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebView.m; sourceTree = "<group>"; };
 		BD38E753115D1AAC001CE05C /* TabbedMainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabbedMainView.h; sourceTree = "<group>"; };
@@ -571,6 +573,20 @@
 				63D098A314F0EB330003A961 /* InteractiveSplash.h */,
 				63D098A414F0EB330003A961 /* InteractiveSplash.m */,
 				63D098A514F0EB330003A961 /* InteractiveSplashDelegate.h */,
+				63D0997214F232E10003A961 /* SplashRhoConfig.h */,
+				63D0997314F232E10003A961 /* SplashRhoConfig.m */,
+			);
+			path = InteractiveSplash;
+			sourceTree = "<group>";
+		};
+		63D098A214F0EB330003A961 /* InteractiveSplash */ = {
+			isa = PBXGroup;
+			children = (
+				63D098A314F0EB330003A961 /* InteractiveSplash.h */,
+				63D098A414F0EB330003A961 /* InteractiveSplash.m */,
+				63D098A514F0EB330003A961 /* InteractiveSplashDelegate.h */,
+				63D0997214F232E10003A961 /* SplashRhoConfig.h */,
+				63D0997314F232E10003A961 /* SplashRhoConfig.m */,
 			);
 			path = InteractiveSplash;
 			sourceTree = "<group>";
