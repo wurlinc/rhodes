@@ -54,7 +54,7 @@ public class SplashScreen implements MainView {
 	private static final String LOADING_PNG = "apps/app/loading.png";
 	private static final String LOADING_PAGE = "apps/app/loading.html";
 
-    private static final String INTERACTIVE_SPLASHSCREEN = "app/interactive_splash/splash.html";
+    private static final String INTERACTIVE_SPLASHSCREEN = "apps/app/interactive_splash/splash.html";
 
 	private View mContentView;
 	
@@ -106,6 +106,8 @@ public class SplashScreen implements MainView {
         boolean hasNeededPage = false;
         InputStream is = null;
         try {
+            if (DEBUG)
+                Log.d(TAG, "Trying Asset Path: "+assetPath);
             is = am.open(assetPath);
             hasNeededPage = true;
         } catch (IOException e) {
@@ -125,9 +127,9 @@ public class SplashScreen implements MainView {
 	private View createHtmlView(Context context, AssetManager am) {
         String page = null;
         if ( assetExists(am, INTERACTIVE_SPLASHSCREEN) ) {
-            page = LOADING_PAGE;
-        } else if ( assetExists(am, LOADING_PAGE)  ) {
             page = INTERACTIVE_SPLASHSCREEN;
+        } else if ( assetExists(am, LOADING_PAGE)  ) {
+            page = LOADING_PAGE;
         }
 
 		// Now create WebView and load appropriate content there
@@ -135,7 +137,8 @@ public class SplashScreen implements MainView {
         configureWebView(view);
 
 		if (page != null) {
-            Log.d(TAG, "Loading asset "+page+" as splash screen");
+            if (DEBUG)
+                Log.d(TAG, "Loading asset "+page+" as splash screen");
 			view.loadUrl("file:///android_asset/" + page);
         } else {
 			view.loadData("<html><title>Loading</title><body>Loading...</body></html>", "text/html", "utf-8");
@@ -146,7 +149,8 @@ public class SplashScreen implements MainView {
 	private void configureWebView(WebView targetView) {
 		String splashJSClass = getSplashJSClass();// Dang. Rhoconf is not available here yet. RhoConf.getString("android_splash_jsinterface_class");
 		if ( splashJSClass != null ) {
-			Log.d(TAG, "Splash JS Interface: "+splashJSClass);
+            if (DEBUG)
+    			Log.d(TAG, "Splash JS Interface: "+splashJSClass);
             targetView.getSettings().setJavaScriptEnabled(true);
             targetView.setWebChromeClient(new WebChromeClient());
             targetView.setWebViewClient(new WebViewClient());

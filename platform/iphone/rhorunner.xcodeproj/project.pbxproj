@@ -36,6 +36,7 @@
 		5C59AB2912DDA1B800ED4A1E /* RhoCryptImpl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C59AB2812DDA1B800ED4A1E /* RhoCryptImpl.mm */; };
 		5C59AB4212DDA22E00ED4A1E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C59AB4112DDA22E00ED4A1E /* Security.framework */; };
 		636E828D14D9DD1E002F9B6D /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 636E828C14D9DD1E002F9B6D /* Twitter.framework */; };
+		63A19F4C14F24FE600581D39 /* SplashRhoConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A19F4B14F24FE600581D39 /* SplashRhoConfig.m */; };
 		63C7AE4A1472D55300ACF16F /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C7AE491472D55300ACF16F /* MediaPlayer.framework */; };
 		63D098A614F0EB330003A961 /* InteractiveSplash.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D098A414F0EB330003A961 /* InteractiveSplash.m */; };
 		BD38E6DC115CFF14001CE05C /* WebView.m in Sources */ = {isa = PBXBuildFile; fileRef = BD38E6DB115CFF14001CE05C /* WebView.m */; };
@@ -220,12 +221,12 @@
 		5C59AB4112DDA22E00ED4A1E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		5C7162920F8B7EEC0096B6AA /* RhoLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RhoLib.xcodeproj; path = RhoLib/RhoLib.xcodeproj; sourceTree = "<group>"; };
 		636E828C14D9DD1E002F9B6D /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/Twitter.framework; sourceTree = DEVELOPER_DIR; };
+		63A19F4A14F24FE600581D39 /* SplashRhoConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SplashRhoConfig.h; path = "../../../../../rhodes-4b48653b8478/platform/iphone/Classes/InteractiveSplash/SplashRhoConfig.h"; sourceTree = "<group>"; };
+		63A19F4B14F24FE600581D39 /* SplashRhoConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SplashRhoConfig.m; path = "../../../../../rhodes-4b48653b8478/platform/iphone/Classes/InteractiveSplash/SplashRhoConfig.m"; sourceTree = "<group>"; };
 		63C7AE491472D55300ACF16F /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/MediaPlayer.framework; sourceTree = DEVELOPER_DIR; };
 		63D098A314F0EB330003A961 /* InteractiveSplash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveSplash.h; sourceTree = "<group>"; };
 		63D098A414F0EB330003A961 /* InteractiveSplash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractiveSplash.m; sourceTree = "<group>"; };
 		63D098A514F0EB330003A961 /* InteractiveSplashDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveSplashDelegate.h; sourceTree = "<group>"; };
-		63D0997214F232E10003A961 /* SplashRhoConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashRhoConfig.h; sourceTree = "<group>"; };
-		63D0997314F232E10003A961 /* SplashRhoConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashRhoConfig.m; sourceTree = "<group>"; };
 		BD2C94A610AE052A008D4692 /* curl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = curl.xcodeproj; path = curl/curl.xcodeproj; sourceTree = SOURCE_ROOT; };
 		BD38E6DB115CFF14001CE05C /* WebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebView.m; sourceTree = "<group>"; };
 		BD38E753115D1AAC001CE05C /* TabbedMainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabbedMainView.h; sourceTree = "<group>"; };
@@ -570,23 +571,11 @@
 		63D098A214F0EB330003A961 /* InteractiveSplash */ = {
 			isa = PBXGroup;
 			children = (
+				63A19F4A14F24FE600581D39 /* SplashRhoConfig.h */,
+				63A19F4B14F24FE600581D39 /* SplashRhoConfig.m */,
 				63D098A314F0EB330003A961 /* InteractiveSplash.h */,
 				63D098A414F0EB330003A961 /* InteractiveSplash.m */,
 				63D098A514F0EB330003A961 /* InteractiveSplashDelegate.h */,
-				63D0997214F232E10003A961 /* SplashRhoConfig.h */,
-				63D0997314F232E10003A961 /* SplashRhoConfig.m */,
-			);
-			path = InteractiveSplash;
-			sourceTree = "<group>";
-		};
-		63D098A214F0EB330003A961 /* InteractiveSplash */ = {
-			isa = PBXGroup;
-			children = (
-				63D098A314F0EB330003A961 /* InteractiveSplash.h */,
-				63D098A414F0EB330003A961 /* InteractiveSplash.m */,
-				63D098A514F0EB330003A961 /* InteractiveSplashDelegate.h */,
-				63D0997214F232E10003A961 /* SplashRhoConfig.h */,
-				63D0997314F232E10003A961 /* SplashRhoConfig.m */,
 			);
 			path = InteractiveSplash;
 			sourceTree = "<group>";
@@ -1078,6 +1067,7 @@
 				FA52300D12E4BBC700AB55CC /* MapViewManager.m in Sources */,
 				FAC6EE6D143B3AF100B8E352 /* RhoMapViewController.m in Sources */,
 				63D098A614F0EB330003A961 /* InteractiveSplash.m in Sources */,
+				63A19F4C14F24FE600581D39 /* SplashRhoConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1140,8 +1130,8 @@
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = rhorunner;
-				PROVISIONING_PROFILE = "2B84953D-741F-4784-828E-BDED902A36A2";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2B84953D-741F-4784-828E-BDED902A36A2";
+				PROVISIONING_PROFILE = "462442D2-5876-425E-AEB3-FC207201AE42";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "462442D2-5876-425E-AEB3-FC207201AE42";
 				SDKROOT = iphoneos;
 				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = dynamic;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1176,8 +1166,8 @@
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = rhorunner;
-				PROVISIONING_PROFILE = "2B84953D-741F-4784-828E-BDED902A36A2";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2B84953D-741F-4784-828E-BDED902A36A2";
+				PROVISIONING_PROFILE = "462442D2-5876-425E-AEB3-FC207201AE42";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "462442D2-5876-425E-AEB3-FC207201AE42";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "../shared/ruby/iphone ../shared/ruby/include ../shared/curl/include ../shared/ ../shared/syncengine ../shared/logging ../shared/common rhoextlib";
@@ -1220,7 +1210,7 @@
 					"$(EXTENSIONS_LDFLAGS)",
 				);
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2B84953D-741F-4784-828E-BDED902A36A2";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "462442D2-5876-425E-AEB3-FC207201AE42";
 				SDKROOT = iphoneos3.2;
 				USER_HEADER_SEARCH_PATHS = "../shared/ ../shared/syncengine ../shared/logging ../shared/common rhoextlib";
 			};
@@ -1299,8 +1289,8 @@
 					"$(EXTENSIONS_LDFLAGS)",
 				);
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "2B84953D-741F-4784-828E-BDED902A36A2";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2B84953D-741F-4784-828E-BDED902A36A2";
+				PROVISIONING_PROFILE = "462442D2-5876-425E-AEB3-FC207201AE42";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "462442D2-5876-425E-AEB3-FC207201AE42";
 				SDKROOT = iphonesimulator3.2;
 				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = dynamic;
 				SYMROOT = build;
@@ -1343,7 +1333,7 @@
 					"$(EXTENSIONS_LDFLAGS)",
 				);
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2B84953D-741F-4784-828E-BDED902A36A2";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "462442D2-5876-425E-AEB3-FC207201AE42";
 				SDKROOT = iphoneos3.2;
 				USER_HEADER_SEARCH_PATHS = "../shared/ ../shared/syncengine ../shared/logging ../shared/common rhoextlib";
 			};
