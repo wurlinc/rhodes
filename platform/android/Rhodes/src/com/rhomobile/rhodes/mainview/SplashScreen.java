@@ -30,9 +30,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
+import android.graphics.Color;
 import com.rhomobile.rhodes.RhodesActivity;
 import com.rhomobile.rhodes.RhodesService;
 import com.rhomobile.rhodes.util.PerformOnUiThread;
+import com.rhomobile.rhodes.util.PreInitRhoConfig;
 import com.rhomobile.rhodes.util.Utils;
 
 import android.content.Context;
@@ -155,6 +157,7 @@ public class SplashScreen implements MainView {
             targetView.setWebChromeClient(new WebChromeClient());
             targetView.setWebViewClient(new WebViewClient());
 			targetView.getSettings().setJavaScriptEnabled(true);
+            targetView.setBackgroundColor(Color.BLACK);
             try {
                 Class jsClass = Class.forName(splashJSClass);
                 Object jsInterface = jsClass.newInstance();
@@ -170,7 +173,7 @@ public class SplashScreen implements MainView {
 	}
 
     private String getSplashJSClass() {
-        return "com.wurl.ui.SplashScreen";
+        return PreInitRhoConfig.readRhoConfig().get("android_splash_jsinterface_class");
     }
 
 	public void start() {

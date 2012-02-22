@@ -385,14 +385,11 @@ public class RhodesActivity extends BaseActivity {
             Log.d(TAG, "Making MainView Visible Immediately:" + v);
 			setMainViewVisible.run();
 		} else {
-            String splashJSClass = RhoConf.getString("android_splash_jsinterface_class");
-            if ( splashJSClass == null ) {
-                int waitTime = RhoConf.getInt("splash_wait");
-                if (DEBUG)
-                    Log.d(TAG, "Making MainView Visible via onPageFinished:" + v + "after "+waitTime+"ms wait..");
-                new WaitThenDoTask(v, setMainViewVisible).execute(waitTime);
-                WebView webView = null;
-            }
+            int waitTime = RhoConf.getInt("splash_wait");
+            if (DEBUG)
+                Log.d(TAG, "Making MainView Visible via onPageFinished:" + v + "after "+waitTime+"ms wait..");
+            new WaitThenDoTask(v, setMainViewVisible).execute(waitTime);
+            WebView webView = null;
 			// If we're requested to wait until first navigation will be done,
 			// use the trick: keep current main view until first navigate will be
 			// finished in the new MainView.
