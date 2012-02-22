@@ -157,7 +157,9 @@ typedef long long int64;
 typedef unsigned long long uint64;
 
 #if defined(OS_SYMBIAN) || defined(OS_LINUX) || defined(OS_MACOSX)
+#ifndef M_PI
 #define M_PI 3.14159265358979323846
+#endif
 #endif
 
 #endif 
