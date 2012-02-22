@@ -215,6 +215,8 @@ void rho_app_interactivesplash_done();
     rho_app_interactivesplash_done();
     self.view.hidden = YES;
     [self.view removeFromSuperview];
+    UIApplication *app = [UIApplication sharedApplication];
+    [app setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 
 #pragma mark UIWebView Delegate Start
