@@ -67,15 +67,18 @@ public class SplashScreen implements MainView {
 	private native int howLongWaitMs();
 	
 	private boolean mFirstNavigate = true;
-	
+
+    private Context context;
+
 	public SplashScreen(Context context) {
+        this.context = context;
 		AssetManager am = context.getResources().getAssets();
 		mContentView = createImageView(context, am);
 		if (mContentView == null)
 			mContentView = createHtmlView(context, am);
 		mFirstNavigate = true;
 	}
-	
+
 	private View createImageView(Context context, AssetManager am) {
 		String[] imageFiles = {LOADING_ANDROID_PNG, LOADING_PNG};
 		for (String imageFile : imageFiles) {
@@ -83,11 +86,11 @@ public class SplashScreen implements MainView {
 			try {
 				is = am.open(imageFile);
 				Bitmap bitmap = BitmapFactory.decodeStream(is);
-				
+
 				ImageView view = new ImageView(context);
 				view.setImageBitmap(bitmap);
 				view.setAdjustViewBounds(false);
-				
+
 				return view;
 			} catch (IOException e) {
 				if (DEBUG)
@@ -100,9 +103,18 @@ public class SplashScreen implements MainView {
 					} catch (IOException e) {}
 			}
 		}
-		
+
 		return null;
 	}
+
+    /**
+     * Returns true if the splash screen is an interactive splash.
+     *
+     * @return True if the splash screen is interactive, false otherwise.
+     */
+    public boolean isInteractiveSplash() {
+        return assetExists(context.getAssets(), INTERACTIVE_SPLASHSCREEN);
+    }
 
     private boolean assetExists(AssetManager am, String assetPath) {
         boolean hasNeededPage = false;

@@ -361,9 +361,12 @@ public class RhodesActivity extends BaseActivity {
 	}
 	
 	public void setMainView(final MainView v, boolean waitUntilNavigationDone) {
+
+        MainView previousMainView = mMainView;
+
 		if (DEBUG)
 			Log.d(TAG, "setMainView: v=" + v + "; mMainView=" + mMainView);
-		
+
         if (RhoConf.getBool("main_view_is_tabbed_view") && v instanceof SimpleMainView) {
             if (DEBUG)
                 Log.d(TAG, "Ignoring setMainView for SimpleMainView because main_view_is_tabbed_view");
@@ -385,11 +388,19 @@ public class RhodesActivity extends BaseActivity {
             Log.d(TAG, "Making MainView Visible Immediately:" + v);
 			setMainViewVisible.run();
 		} else {
-            int waitTime = RhoConf.getInt("splash_wait");
-            if (DEBUG)
-                Log.d(TAG, "Making MainView Visible via onPageFinished:" + v + "after "+waitTime+"ms wait..");
-            new WaitThenDoTask(v, setMainViewVisible).execute(waitTime);
-            WebView webView = null;
+            boolean doSetMainViewVisible = true;
+            if (previousMainView != null && previousMainView instanceof SplashScreen) {
+                // An interactive splash will call setMainViewVisible on its own via the
+                // javascriptinterface. So we do keep the mMainView but we don't set it visible.
+                doSetMainViewVisible = ! ((SplashScreen)previousMainView).isInteractiveSplash();
+            }
+            if (doSetMainViewVisible) {
+                int waitTime = RhoConf.getInt("splash_wait");
+                if (DEBUG)
+                    Log.d(TAG, "Making MainView Visible via onPageFinished:" + v + "after "+waitTime+"ms wait..");
+                new WaitThenDoTask(v, setMainViewVisible).execute(waitTime);
+            }
+//            WebView webView = null;
 			// If we're requested to wait until first navigation will be done,
 			// use the trick: keep current main view until first navigate will be
 			// finished in the new MainView.
