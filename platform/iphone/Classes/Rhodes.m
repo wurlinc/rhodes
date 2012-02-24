@@ -981,6 +981,7 @@ static Rhodes *instance = NULL;
 // Native functions
 
 void rho_app_interactivesplash_done() {
+    NSLog(@"Interactive Splash Done");
     [[Rhodes sharedInstance] clearInteractiveSplash];
     [[Rhodes sharedInstance] doStartUp];
 	[[Rhodes sharedInstance] processDoSync:NULL];

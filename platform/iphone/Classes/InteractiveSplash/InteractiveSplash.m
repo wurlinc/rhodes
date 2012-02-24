@@ -132,14 +132,20 @@ void rho_app_interactivesplash_done();
     [super viewDidAppear:animated];
     if (self.url && ! self.loaded)
         [self loadURL];
-//    SEL didAppearSelector = @selector(splashScreenDidAppear:); if ([self.delegate respondsToSelector:didAppearSelector]) {
-//        [self.delegate splashScreenDidAppear:self];
-//    }
-//    [self performSelector:@selector(hide) withObject:nil afterDelay:0];
+    SEL didAppearSelector = @selector(splashScreenDidAppear:); if ([self.delegate respondsToSelector:didAppearSelector]) {
+        [self.delegate splashScreenDidAppear:self];
+    }
+    [self performSelector:@selector(hide) withObject:nil afterDelay:0];
 }
 
-- (void)splashScreenDidDisappear:(InteractiveSplash *)splashScreen { 
-//    webView = nil;
+- (void)viewWillDisappear:(BOOL)animated
+{
+    if ( self.delegate ) {
+        [self.delegate splashScreenDidDisappear:self];
+        NSLog(@"InteractiveSplash Clearing delegate");
+        self.delegate = nil;
+    }
+    //    webView = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:
@@ -209,6 +215,7 @@ void rho_app_interactivesplash_done();
 /* hideSplash gets called from a separate thread. We force it to wait using CSplashScreen and
    only then we call hide. */
 - (void)closeSplash {
+    NSLog(@"Close Splash");
     [self stringByEvaluatingJavascriptString:@"if ( typeof(splash_will_close) == 'function' ) { splash_will_close(); }"];
     if (self.delegate)
         [self.delegate splashScreenWillDisappear:self];
