@@ -212,6 +212,13 @@ void rho_app_interactivesplash_done();
     return encodedUrl;
 }
 
+- (void)doSplashHiding {
+    self.view.hidden = YES;
+    [self.view removeFromSuperview];
+    UIApplication *app = [UIApplication sharedApplication];
+    [app setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+}
+
 /* hideSplash gets called from a separate thread. We force it to wait using CSplashScreen and
    only then we call hide. */
 - (void)closeSplash {
@@ -220,10 +227,8 @@ void rho_app_interactivesplash_done();
     if (self.delegate)
         [self.delegate splashScreenWillDisappear:self];
     rho_app_interactivesplash_done();
-    self.view.hidden = YES;
-    [self.view removeFromSuperview];
-    UIApplication *app = [UIApplication sharedApplication];
-    [app setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    [self performSelector:@selector(doSplashHiding) withObject:nil afterDelay:2];
+//    [self doSplashHiding];
 }
 
 #pragma mark UIWebView Delegate Start

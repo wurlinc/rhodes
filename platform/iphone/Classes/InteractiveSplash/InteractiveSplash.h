@@ -29,6 +29,7 @@
 - (NSString*)encodeUrl:(NSString*)url;
 - (void)closeSplash;
 - (NSString *) stringByEvaluatingJavascriptString:(NSString *)string;
+- (void)doSplashHiding;
 
 + (InteractiveSplash*) maybeShowInteractiveSplashInWindow:(UIWindow*)window;
 + (BOOL) hasInteractiveSplash;
