@@ -24,8 +24,8 @@ public class PreInitRhoConfig {
 
     public static HashMap<String, String> readRhoConfig() {
         HashMap<String, String> result = new HashMap<String, String>();
-        AssetManager am = RhodesActivity.getContext().getResources().getAssets();
         try {
+            AssetManager am = RhodesActivity.getContext().getResources().getAssets();
             BufferedReader br = new BufferedReader(new InputStreamReader(am.open(RHO_CONFIG_LOCATION)));
             String line = null;
             while ( (line = br.readLine()) != null) {
@@ -37,7 +37,9 @@ public class PreInitRhoConfig {
                 }
             }
         } catch (IOException e) {
-            Log.d(TAG, "Cannot read "+RHO_CONFIG_LOCATION+": "+e.getLocalizedMessage());
+            Log.e(TAG, "Cannot read "+RHO_CONFIG_LOCATION+": "+e.getLocalizedMessage());
+        } catch (IllegalStateException ise) {
+            Log.e(TAG, "Cannot read "+RHO_CONFIG_LOCATION+": "+ise.getLocalizedMessage(), ise);
         }
         return result;
     }
